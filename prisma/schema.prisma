@@ -36,6 +36,8 @@ model Product {
   dimensions  String
   imageUrl    String
   designItems DesignItem[]
+
+  @@index([brandId])
 }
 
 model Design {
@@ -52,6 +54,8 @@ model Design {
   serviceOption  String
   createdAt      DateTime            @default(now())
   alternatives   DesignAlternative[]
+
+  @@index([userId])
 }
 
 model DesignAlternative {
@@ -64,6 +68,8 @@ model DesignAlternative {
   hasHotspots  Boolean      @default(false)
   errorMessage String?
   items        DesignItem[]
+
+  @@index([designId])
 }
 
 model DesignItem {
@@ -76,4 +82,7 @@ model DesignItem {
   bboxY               Float
   bboxWidth           Float
   bboxHeight          Float
+
+  @@index([designAlternativeId])
+  @@index([productId])
 }
