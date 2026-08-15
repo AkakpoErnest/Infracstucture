@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# next.js
+.next/
+out/
+build/
+dist/
+
+# env files (never commit secrets)
+.env
+.env*.local
+
+# db
+*.db
+*.db-journal
+prisma/dev.db
+
+# misc
+.DS_Store
+*.log
