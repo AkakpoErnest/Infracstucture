@@ -19,7 +19,7 @@ end-to-end.
 |---|---|---|---|---|
 | 1 | **Foundation** — full auth, full product/brand catalog, full admin CRUD panel | Not started | — | — |
 | 2 | **Shopping** — cart, checkout, real payments | Not started | — | — |
-| 3 | **AI Design Engine** — room upload → design-request form → 4 AI-generated redesigns from the seeded catalog, with clickable products | **In progress** (13 of 16 tasks done) | [spec](docs/superpowers/specs/2026-08-15-ai-design-engine-design.md) | [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) |
+| 3 | **AI Design Engine** — room upload → design-request form → 4 AI-generated redesigns from the seeded catalog, with clickable products | **In progress** (14 of 16 tasks done) | [spec](docs/superpowers/specs/2026-08-15-ai-design-engine-design.md) | [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) |
 | 4 | **Turnkey & Profile** — "have our team complete this project" booking, favorites, full user profile (design history, purchase history, saved addresses) | Not started | — | — |
 
 Phase 3 builds a minimal slice of Phase 1 (basic email/password auth via
@@ -51,8 +51,8 @@ per the 16-task plan linked above:
 - [x] Task 11 — Bounding-box response parser
 - [x] Task 12 — Gemini client wrapper
 - [x] Task 13 — Generate API route (orchestration)
-- [ ] Task 14 — Results UI: grid, hotspots, product panel, error states *(next up)*
-- [ ] Task 15 — "My designs" list page
+- [x] Task 14 — Results UI: grid, hotspots, product panel, error states
+- [ ] Task 15 — "My designs" list page *(next up)*
 - [ ] Task 16 — Full test suite and manual smoke check
 
 See the [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) for the
