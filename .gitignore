@@ -21,5 +21,8 @@ prisma/dev.db
 .DS_Store
 *.log
 
+# user-uploaded content
+public/uploads/
+
 # typescript build cache
 *.tsbuildinfo
