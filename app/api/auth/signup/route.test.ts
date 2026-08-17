@@ -52,4 +52,29 @@ describe("POST /api/auth/signup", () => {
     const res = await POST(jsonRequest({ email: "a@b.com", password: "123", name: "Ana" }));
     expect(res.status).toBe(400);
   });
+
+  it("rejects a malformed JSON body with 400", async () => {
+    const res = await POST(
+      new Request("http://localhost/api/auth/signup", {
+        method: "POST",
+        body: "{not valid json",
+        headers: { "Content-Type": "application/json" },
+      })
+    );
+
+    expect(res.status).toBe(400);
+    expect(mockFindUnique).not.toHaveBeenCalled();
+    expect(mockCreate).not.toHaveBeenCalled();
+  });
+
+  it("normalizes email to lowercase before lookup and creation", async () => {
+    mockFindUnique.mockResolvedValue(null);
+    mockCreate.mockResolvedValue({ id: "u1", email: "foo@x.com", name: "Ana" });
+
+    const res = await POST(jsonRequest({ email: "Foo@X.com", password: "hunter22", name: "Ana" }));
+
+    expect(res.status).toBe(201);
+    expect(mockFindUnique.mock.calls[0][0]).toEqual({ where: { email: "foo@x.com" } });
+    expect(mockCreate.mock.calls[0][0].data.email).toBe("foo@x.com");
+  });
 });
