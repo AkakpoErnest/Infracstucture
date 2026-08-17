@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import Link from "next/link";
 import { AlternativeGrid, type Alternative } from "@/components/design/alternative-grid";
 
 interface DesignResponse {
@@ -33,15 +34,46 @@ interface DesignResponse {
 
 export default function DesignResultsPage({ params }: { params: { id: string } }) {
   const [design, setDesign] = useState<DesignResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  // Next.js App Router re-renders this component with new `params` rather than
+  // remounting it when navigating between two /design/[id] URLs. Track the id
+  // the most recently started fetch was for, so a slow in-flight response for
+  // a previous id can never clobber state for the id currently being viewed.
+  const latestIdRef = useRef(params.id);
 
   const load = useCallback(async () => {
-    const res = await fetch(`/api/designs/${params.id}`);
-    if (res.ok) setDesign(await res.json());
+    const requestedId = params.id;
+    latestIdRef.current = requestedId;
+    setError(null);
+
+    const res = await fetch(`/api/designs/${requestedId}`);
+    if (latestIdRef.current !== requestedId) return; // navigated away before this resolved
+
+    if (res.ok) {
+      const data = await res.json();
+      if (latestIdRef.current !== requestedId) return;
+      setDesign(data);
+    } else {
+      setError(res.status === 401 ? "Please sign in to view this design." : "Design not found.");
+    }
   }, [params.id]);
 
   useEffect(() => {
+    latestIdRef.current = params.id;
+    setDesign(null);
     load();
-  }, [load]);
+  }, [params.id, load]);
+
+  if (error) {
+    return (
+      <main className="mx-auto max-w-xl p-8">
+        <p className="text-sm text-destructive">{error}</p>
+        <Link href="/design/new" className="mt-4 inline-block text-sm underline">
+          Start a new design
+        </Link>
+      </main>
+    );
+  }
 
   if (!design) {
     return <main className="p-8">Loading...</main>;

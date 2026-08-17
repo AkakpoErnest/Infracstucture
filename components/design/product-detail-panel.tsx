@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 export interface ProductDetail {
@@ -29,6 +29,7 @@ export function ProductDetailPanel({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogTitle>{product.name}</DialogTitle>
+        <DialogDescription className="sr-only">Product details for {product.name}</DialogDescription>
         <Image
           src={product.imageUrl}
           alt={product.name}
