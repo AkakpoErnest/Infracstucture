@@ -19,7 +19,7 @@ end-to-end.
 |---|---|---|---|---|
 | 1 | **Foundation** — full auth, full product/brand catalog, full admin CRUD panel | Not started | — | — |
 | 2 | **Shopping** — cart, checkout, real payments | Not started | — | — |
-| 3 | **AI Design Engine** — room upload → design-request form → 4 AI-generated redesigns from the seeded catalog, with clickable products | **In progress** (15 of 16 tasks done) | [spec](docs/superpowers/specs/2026-08-15-ai-design-engine-design.md) | [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) |
+| 3 | **AI Design Engine** — room upload → design-request form → 4 AI-generated redesigns from the seeded catalog, with clickable products | **Feature-complete** (16/16 tasks, all reviewed) — on branch `worktree-ai-design-engine`, pending merge to `main` | [spec](docs/superpowers/specs/2026-08-15-ai-design-engine-design.md) | [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) |
 | 4 | **Turnkey & Profile** — "have our team complete this project" booking, favorites, full user profile (design history, purchase history, saved addresses) | Not started | — | — |
 
 Phase 3 builds a minimal slice of Phase 1 (basic email/password auth via
@@ -53,7 +53,27 @@ per the 16-task plan linked above:
 - [x] Task 13 — Generate API route (orchestration)
 - [x] Task 14 — Results UI: grid, hotspots, product panel, error states
 - [x] Task 15 — "My designs" list page
-- [ ] Task 16 — Full test suite and manual smoke check *(next up)*
+- [x] Task 16 — Full test suite and manual smoke check
+
+All 16 tasks were built implementer-first, then independently verified by a
+separate spec-compliance pass and a separate code-quality pass, with issues
+sent back for fixes and re-verified before merging — this caught and fixed
+a critical path-traversal vulnerability (Task 13), several stuck-loading/race
+bugs, and an all-or-nothing hotspot-insert failure mode, among others.
+
+**Verification status:** 48/48 automated tests passing, `tsc --noEmit` clean,
+and a live scripted end-to-end smoke test (sign up → sign in → upload →
+generate → fetch results → my-designs list) confirmed the full pipeline
+works, including the error-handling path. **Known limitation:** the
+`GEMINI_API_KEY` configured in this environment has zero image-generation
+quota on its current billing tier (confirmed via live API calls in Tasks 12
+and 16), so real AI-generated images can't be produced here — every
+alternative currently comes back as a handled `failed` state with a quota
+error message rather than a rendered design. The code path for a working key
+is implemented and was verified against the real API for auth, request
+shape, and response parsing; only image-output itself is blocked by billing,
+not by anything in this codebase. Swapping in a key with image-generation
+quota should make designs render with no code changes.
 
 See the [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) for the
 full step-by-step breakdown of each task, and the
