@@ -18,7 +18,7 @@ import {
 const NUM_ALTERNATIVES = 4;
 
 const designRequestSchema = z.object({
-  roomPhotoUrl: z.string().min(1),
+  roomPhotoUrl: z.string().regex(/^\/uploads\/rooms\/[\w-]+\.(png|jpe?g|webp)$/),
   roomType: z.enum([
     "Living Room", "Bedroom", "Kitchen", "Bathroom", "Children's Room",
     "Office", "Hallway", "Balcony", "Other",
@@ -45,12 +45,18 @@ async function saveGeneratedImage(base64: string, mimeType: string): Promise<str
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
-  const userId = (session?.user as { id?: string } | undefined)?.id;
+  const userId = session?.user?.id;
   if (!userId) {
     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
   }
 
-  const body = await request.json();
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+
   const parsed = designRequestSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });

@@ -87,6 +87,26 @@ describe("POST /api/designs", () => {
     expect(res.status).toBe(400);
   });
 
+  it("rejects a path-traversal roomPhotoUrl with 400", async () => {
+    const res = await POST(req({ ...validBody, roomPhotoUrl: "../.env.local" }));
+    expect(res.status).toBe(400);
+  });
+
+  it("rejects an absolute-path roomPhotoUrl with 400", async () => {
+    const res = await POST(req({ ...validBody, roomPhotoUrl: "/etc/passwd" }));
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 400 for a malformed JSON body", async () => {
+    const malformedReq = new Request("http://localhost/api/designs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{not valid json",
+    });
+    const res = await POST(malformedReq);
+    expect(res.status).toBe(400);
+  });
+
   it("returns 503 with a clear message when Gemini is not configured", async () => {
     mockIsConfigured.mockReturnValue(false);
     const res = await POST(req(validBody));
