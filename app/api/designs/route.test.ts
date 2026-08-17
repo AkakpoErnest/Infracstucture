@@ -6,6 +6,7 @@ vi.mock("@/lib/auth", () => ({ authOptions: {} }));
 
 const mockFindMany = vi.fn();
 const mockDesignCreate = vi.fn();
+const mockDesignFindMany = vi.fn();
 const mockAlternativeCreate = vi.fn();
 const mockAlternativeUpdate = vi.fn();
 const mockDesignItemCreateMany = vi.fn();
@@ -13,7 +14,10 @@ const mockDesignItemCreateMany = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     product: { findMany: (...a: unknown[]) => mockFindMany(...a) },
-    design: { create: (...a: unknown[]) => mockDesignCreate(...a) },
+    design: {
+      create: (...a: unknown[]) => mockDesignCreate(...a),
+      findMany: (...a: unknown[]) => mockDesignFindMany(...a),
+    },
     designAlternative: {
       create: (...a: unknown[]) => mockAlternativeCreate(...a),
       update: (...a: unknown[]) => mockAlternativeUpdate(...a),
@@ -36,7 +40,7 @@ vi.mock("fs/promises", () => ({
   writeFile: vi.fn().mockResolvedValue(undefined),
 }));
 
-import { POST } from "./route";
+import { POST, GET } from "./route";
 
 function req(body: unknown) {
   return new Request("http://localhost/api/designs", {
@@ -176,5 +180,39 @@ describe("POST /api/designs", () => {
     );
     expect(readyUpdate).toBeTruthy();
     expect(readyUpdate?.[0].data.hasHotspots).toBe(true);
+  });
+});
+
+describe("GET /api/designs", () => {
+  beforeEach(() => {
+    // This describe block's own beforeEach — the POST block's vi.clearAllMocks()
+    // is scoped to its own describe and does not run before these tests. Reset
+    // mockDesignFindMany explicitly so no stale mockResolvedValue/call history
+    // from a previous test (in this block or elsewhere) can leak in.
+    mockDesignFindMany.mockReset();
+    mockGetServerSession.mockResolvedValue({ user: { id: "u1" } });
+  });
+
+  it("returns 401 when not signed in", async () => {
+    mockGetServerSession.mockResolvedValue(null);
+    const res = await GET();
+    expect(res.status).toBe(401);
+  });
+
+  it("returns only the signed-in user's designs, newest first", async () => {
+    mockDesignFindMany.mockResolvedValue([
+      { id: "d2", roomType: "Bedroom", style: "Japandi", createdAt: new Date("2026-01-02") },
+      { id: "d1", roomType: "Living Room", style: "Scandinavian", createdAt: new Date("2026-01-01") },
+    ]);
+    const res = await GET();
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body).toHaveLength(2);
+    expect(mockDesignFindMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { userId: "u1" },
+        orderBy: { createdAt: "desc" },
+      })
+    );
   });
 });

@@ -179,3 +179,19 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ designId: design.id }, { status: 201 });
 }
+
+export async function GET() {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+  if (!userId) {
+    return NextResponse.json({ error: "Not signed in" }, { status: 401 });
+  }
+
+  const designs = await prisma.design.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, roomType: true, style: true, createdAt: true },
+  });
+
+  return NextResponse.json(designs);
+}
