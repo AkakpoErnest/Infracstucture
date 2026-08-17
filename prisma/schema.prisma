@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  designs      Design[]
+}
+
+model Brand {
+  id       String    @id @default(uuid())
+  name     String    @unique
+  logoUrl  String?
+  products Product[]
+}
+
+model Product {
+  id          String       @id @default(uuid())
+  name        String
+  brandId     String
+  brand       Brand        @relation(fields: [brandId], references: [id])
+  category    String
+  styleTags   String
+  color       String
+  material    String
+  price       Float
+  dimensions  String
+  imageUrl    String
+  designItems DesignItem[]
+
+  @@index([brandId])
+}
+
+model Design {
+  id             String              @id @default(uuid())
+  userId         String
+  user           User                @relation(fields: [userId], references: [id])
+  roomPhotoUrl   String
+  roomType       String
+  style          String
+  colorPrefs     String
+  materialPrefs  String
+  flooringPref   String
+  budget         Float
+  serviceOption  String
+  createdAt      DateTime            @default(now())
+  alternatives   DesignAlternative[]
+
+  @@index([userId])
+}
+
+model DesignAlternative {
+  id           String       @id @default(uuid())
+  designId     String
+  design       Design       @relation(fields: [designId], references: [id])
+  index        Int
+  imageUrl     String?
+  status       String       @default("pending")
+  hasHotspots  Boolean      @default(false)
+  errorMessage String?
+  items        DesignItem[]
+
+  @@index([designId])
+}
+
+model DesignItem {
+  id                  String            @id @default(uuid())
+  designAlternativeId String
+  alternative         DesignAlternative @relation(fields: [designAlternativeId], references: [id])
+  productId           String
+  product             Product           @relation(fields: [productId], references: [id])
+  bboxX               Float
+  bboxY               Float
+  bboxWidth           Float
+  bboxHeight          Float
+
+  @@index([designAlternativeId])
+  @@index([productId])
+}

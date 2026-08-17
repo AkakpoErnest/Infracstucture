@@ -23,3 +23,9 @@ prisma/dev.db
 
 # git worktrees (checked out working copies, not repo content)
 .claude/worktrees/
+
+# user-uploaded content
+public/uploads/
+
+# typescript build cache
+*.tsbuildinfo

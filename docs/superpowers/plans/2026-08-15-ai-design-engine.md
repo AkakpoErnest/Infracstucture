@@ -596,7 +596,7 @@ if (process.env.NODE_ENV !== "production") {
 - [ ] **Step 3: Write `.env.example`**
 
 ```
-DATABASE_URL="file:./prisma/dev.db"
+DATABASE_URL="file:./dev.db"
 NEXTAUTH_SECRET="replace-with-a-random-32-byte-string"
 NEXTAUTH_URL="http://localhost:3000"
 GEMINI_API_KEY=""
@@ -608,7 +608,7 @@ GEMINI_IMAGE_MODEL="gemini-2.5-flash-image"
 Run:
 ```bash
 grep -q DATABASE_URL .env.local || cat >> .env.local << 'EOF'
-DATABASE_URL="file:./prisma/dev.db"
+DATABASE_URL="file:./dev.db"
 NEXTAUTH_SECRET="dev-only-secret-change-me-1234567890abcdef"
 NEXTAUTH_URL="http://localhost:3000"
 GEMINI_IMAGE_MODEL="gemini-2.5-flash-image"
@@ -791,6 +791,14 @@ Expected: PASS (4 tests)
 - [ ] **Step 5: Write `prisma/seed.ts`**
 
 ```ts
+// tsx runs this script outside Next.js's request lifecycle, so .env.local
+// isn't loaded automatically the way it is for the app itself. @next/env is
+// the officially recommended way to load the same .env stack Next.js uses,
+// in a standalone script — it ships as part of the `next` package, so it
+// resolves without adding a separate dependency.
+import { loadEnvConfig } from "@next/env";
+loadEnvConfig(process.cwd());
+
 import { PrismaClient } from "@prisma/client";
 import { seedBrands, seedProducts } from "./seed-data";
 
