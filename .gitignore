@@ -20,3 +20,6 @@ prisma/dev.db
 # misc
 .DS_Store
 *.log
+
+# git worktrees (checked out working copies, not repo content)
+.claude/worktrees/
