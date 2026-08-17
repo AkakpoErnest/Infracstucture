@@ -215,4 +215,12 @@ describe("GET /api/designs", () => {
       })
     );
   });
+
+  it("returns an empty array when the user has no designs", async () => {
+    mockDesignFindMany.mockResolvedValue([]);
+    const res = await GET();
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body).toEqual([]);
+  });
 });

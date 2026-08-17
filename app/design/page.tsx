@@ -23,7 +23,7 @@ export default function MyDesignsPage() {
           setError(
             res.status === 401
               ? "Please sign in to view your designs."
-              : "Could not load your designs."
+              : "Could not load your designs. Please try again."
           );
           return;
         }
