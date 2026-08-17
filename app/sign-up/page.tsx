@@ -19,25 +19,36 @@ export default function SignUpPage() {
     setError(null);
     setLoading(true);
 
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error?.formErrors?.[0] ?? data.error ?? "Sign up failed");
+      if (!res.ok) {
+        const data = await res.json();
+        const fieldErrors = data.error?.fieldErrors
+          ? (Object.values(data.error.fieldErrors).flat() as string[])
+          : [];
+        const message =
+          fieldErrors.length > 0
+            ? fieldErrors[0]
+            : data.error?.formErrors?.[0] ?? (typeof data.error === "string" ? data.error : "Sign up failed");
+        setError(message);
+        return;
+      }
+
+      const signInResult = await signIn("credentials", { email, password, redirect: false });
+      if (signInResult?.ok) {
+        router.push("/design/new");
+      } else {
+        router.push("/sign-in");
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
       setLoading(false);
-      return;
-    }
-
-    const signInResult = await signIn("credentials", { email, password, redirect: false });
-    setLoading(false);
-    if (signInResult?.ok) {
-      router.push("/design/new");
-    } else {
-      router.push("/sign-in");
     }
   }
 

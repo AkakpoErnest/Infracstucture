@@ -17,12 +17,17 @@ export default function SignInPage() {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    const result = await signIn("credentials", { email, password, redirect: false });
-    setLoading(false);
-    if (result?.ok) {
-      router.push("/design/new");
-    } else {
-      setError("Invalid email or password");
+    try {
+      const result = await signIn("credentials", { email, password, redirect: false });
+      if (result?.ok) {
+        router.push("/design/new");
+      } else {
+        setError("Invalid email or password");
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
