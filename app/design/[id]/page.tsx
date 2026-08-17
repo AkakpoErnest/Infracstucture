@@ -46,15 +46,19 @@ export default function DesignResultsPage({ params }: { params: { id: string } }
     latestIdRef.current = requestedId;
     setError(null);
 
-    const res = await fetch(`/api/designs/${requestedId}`);
-    if (latestIdRef.current !== requestedId) return; // navigated away before this resolved
+    try {
+      const res = await fetch(`/api/designs/${requestedId}`);
+      if (latestIdRef.current !== requestedId) return; // navigated away before this resolved
 
-    if (res.ok) {
-      const data = await res.json();
-      if (latestIdRef.current !== requestedId) return;
-      setDesign(data);
-    } else {
-      setError(res.status === 401 ? "Please sign in to view this design." : "Design not found.");
+      if (res.ok) {
+        const data = await res.json();
+        if (latestIdRef.current !== requestedId) return;
+        setDesign(data);
+      } else {
+        setError(res.status === 401 ? "Please sign in to view this design." : "Design not found.");
+      }
+    } catch {
+      setError("Could not load your design. Please try again.");
     }
   }, [params.id]);
 

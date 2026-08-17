@@ -1,11 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
+const mockGetServerSession = vi.fn();
+vi.mock("next-auth", () => ({ getServerSession: (...a: unknown[]) => mockGetServerSession(...a) }));
+vi.mock("@/lib/auth", () => ({ authOptions: {} }));
+
 vi.mock("fs/promises", () => ({
   mkdir: vi.fn().mockResolvedValue(undefined),
   writeFile: vi.fn().mockResolvedValue(undefined),
 }));
 
 import { POST } from "./route";
+import { writeFile } from "fs/promises";
 
 function fileRequest(file: File | null) {
   const form = new FormData();
@@ -14,7 +19,18 @@ function fileRequest(file: File | null) {
 }
 
 describe("POST /api/uploads", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockGetServerSession.mockResolvedValue({ user: { id: "u1" } });
+  });
+
+  it("returns 401 when not signed in", async () => {
+    mockGetServerSession.mockResolvedValue(null);
+    const file = new File([new Uint8Array([1, 2, 3])], "room.png", { type: "image/png" });
+    const res = await POST(fileRequest(file));
+    expect(res.status).toBe(401);
+    expect(writeFile).not.toHaveBeenCalled();
+  });
 
   it("rejects a request with no file", async () => {
     const res = await POST(fileRequest(null));
