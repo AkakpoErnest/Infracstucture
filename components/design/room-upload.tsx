@@ -1,29 +1,49 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function RoomUpload({ onUploaded }: { onUploaded: (url: string) => void }) {
   const [preview, setPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const previewUrlRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+      }
+    };
+  }, []);
 
   async function handleFile(file: File) {
     setError(null);
-    setPreview(URL.createObjectURL(file));
+
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+    }
+    const nextPreviewUrl = URL.createObjectURL(file);
+    previewUrlRef.current = nextPreviewUrl;
+    setPreview(nextPreviewUrl);
     setUploading(true);
 
-    const form = new FormData();
-    form.set("file", file);
-    const res = await fetch("/api/uploads", { method: "POST", body: form });
-    setUploading(false);
+    try {
+      const form = new FormData();
+      form.set("file", file);
+      const res = await fetch("/api/uploads", { method: "POST", body: form });
 
-    if (!res.ok) {
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error ?? "Upload failed");
+        return;
+      }
+
       const data = await res.json();
-      setError(data.error ?? "Upload failed");
-      return;
+      onUploaded(data.url);
+    } catch {
+      setError("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
     }
-
-    const data = await res.json();
-    onUploaded(data.url);
   }
 
   return (
