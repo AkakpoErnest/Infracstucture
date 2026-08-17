@@ -19,7 +19,7 @@ end-to-end.
 |---|---|---|---|---|
 | 1 | **Foundation** — full auth, full product/brand catalog, full admin CRUD panel | Not started | — | — |
 | 2 | **Shopping** — cart, checkout, real payments | Not started | — | — |
-| 3 | **AI Design Engine** — room upload → design-request form → 4 AI-generated redesigns from the seeded catalog, with clickable products | **Feature-complete** (16/16 tasks, all reviewed) — on branch `worktree-ai-design-engine`, pending merge to `main` | [spec](docs/superpowers/specs/2026-08-15-ai-design-engine-design.md) | [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) |
+| 3 | **AI Design Engine** — room upload → design-request form → 4 AI-generated redesigns from the seeded catalog, with clickable products | **Merged to `main`** (16/16 tasks, all reviewed, plus a final cross-branch review pass) | [spec](docs/superpowers/specs/2026-08-15-ai-design-engine-design.md) | [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) |
 | 4 | **Turnkey & Profile** — "have our team complete this project" booking, favorites, full user profile (design history, purchase history, saved addresses) | Not started | — | — |
 
 Phase 3 builds a minimal slice of Phase 1 (basic email/password auth via
@@ -35,8 +35,8 @@ Stack: Next.js 14 (App Router), TypeScript, Tailwind, shadcn-style
 components, Prisma + SQLite, NextAuth.js (credentials), Google Gemini
 (image generation + bounding-box product detection).
 
-Being built in a dedicated git worktree/branch (`worktree-ai-design-engine`)
-per the 16-task plan linked above:
+Built in a dedicated git worktree/branch (`worktree-ai-design-engine`, now
+merged into `main` and deleted) per the 16-task plan linked above:
 
 - [x] Task 1 — Scaffold the Next.js project
 - [x] Task 2 — shadcn-style UI primitives
@@ -61,19 +61,34 @@ sent back for fixes and re-verified before merging — this caught and fixed
 a critical path-traversal vulnerability (Task 13), several stuck-loading/race
 bugs, and an all-or-nothing hotspot-insert failure mode, among others.
 
-**Verification status:** 48/48 automated tests passing, `tsc --noEmit` clean,
+**Verification status:** 49/49 automated tests passing, `tsc --noEmit` clean,
 and a live scripted end-to-end smoke test (sign up → sign in → upload →
 generate → fetch results → my-designs list) confirmed the full pipeline
-works, including the error-handling path. **Known limitation:** the
-`GEMINI_API_KEY` configured in this environment has zero image-generation
-quota on its current billing tier (confirmed via live API calls in Tasks 12
-and 16), so real AI-generated images can't be produced here — every
-alternative currently comes back as a handled `failed` state with a quota
-error message rather than a rendered design. The code path for a working key
-is implemented and was verified against the real API for auth, request
-shape, and response parsing; only image-output itself is blocked by billing,
-not by anything in this codebase. Swapping in a key with image-generation
-quota should make designs render with no code changes.
+works, including the error-handling path. A final cross-branch review (after
+all 16 tasks) additionally caught and fixed a missing auth check on the
+upload endpoint and one remaining unguarded fetch — both fixed and
+re-verified before merge.
+
+**Known limitation:** the `GEMINI_API_KEY` configured in this environment has
+zero image-generation quota on its current billing tier (confirmed via live
+API calls in Tasks 12 and 16), so real AI-generated images can't be produced
+here — every alternative currently comes back as a handled `failed` state
+with a quota error message rather than a rendered design. The code path for
+a working key is implemented and was verified against the real API for auth,
+request shape, and response parsing; only image-output itself is blocked by
+billing, not by anything in this codebase. Swapping in a key with
+image-generation quota should make designs render with no code changes.
+
+**Also flagged, not yet addressed:** `npm audit` on the merged dependency
+tree reports multiple advisories against the pinned `next@14.2.15`
+(including some rated critical — DoS/cache-poisoning/SSRF classes tied to
+Server Actions/Middleware/Image Optimization, none of which this app
+currently exercises), plus lower-severity ones in `postcss`/`glob`/`esbuild`.
+Fixing these properly means a major-version Next.js upgrade with real
+breaking changes — deliberately not done as part of this merge to avoid
+destabilizing a just-finished, fully-tested feature branch. Worth a
+dedicated upgrade pass before any real deployment; run `npm audit` for the
+current list.
 
 See the [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) for the
 full step-by-step breakdown of each task, and the
