@@ -19,7 +19,7 @@ end-to-end.
 |---|---|---|---|---|
 | 1 | **Foundation** — full auth, full product/brand catalog, full admin CRUD panel | Not started | — | — |
 | 2 | **Shopping** — cart, checkout, real payments | Not started | — | — |
-| 3 | **AI Design Engine** — room upload → design-request form → 4 AI-generated redesigns from the seeded catalog, with clickable products | **In progress** (8 of 16 tasks done) | [spec](docs/superpowers/specs/2026-08-15-ai-design-engine-design.md) | [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) |
+| 3 | **AI Design Engine** — room upload → design-request form → 4 AI-generated redesigns from the seeded catalog, with clickable products | **In progress** (9 of 16 tasks done) | [spec](docs/superpowers/specs/2026-08-15-ai-design-engine-design.md) | [plan](docs/superpowers/plans/2026-08-15-ai-design-engine.md) |
 | 4 | **Turnkey & Profile** — "have our team complete this project" booking, favorites, full user profile (design history, purchase history, saved addresses) | Not started | — | — |
 
 Phase 3 builds a minimal slice of Phase 1 (basic email/password auth via
@@ -46,8 +46,8 @@ per the 16-task plan linked above:
 - [x] Task 6 — Auth UI pages
 - [x] Task 7 — Room photo upload
 - [x] Task 8 — Design request form types and component
-- [ ] Task 9 — Catalog shortlist filter *(next up)*
-- [ ] Task 10 — Prompt builder
+- [x] Task 9 — Catalog shortlist filter
+- [ ] Task 10 — Prompt builder *(next up)*
 - [ ] Task 11 — Bounding-box response parser
 - [ ] Task 12 — Gemini client wrapper
 - [ ] Task 13 — Generate API route (orchestration)
