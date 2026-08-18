@@ -147,6 +147,7 @@ describe("POST /api/designs", () => {
       (c) => c[0].data.status === "failed"
     );
     expect(failedUpdate).toBeTruthy();
+    expect(failedUpdate?.[0].data.errorMessage).toBe("safety block");
   });
 
   it("skips the bounding-box call for Design Inspiration Only", async () => {

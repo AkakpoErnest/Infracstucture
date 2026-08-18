@@ -9,7 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { buildCatalogShortlist, type CatalogProduct } from "@/lib/catalog-shortlist";
 import { buildDesignPrompt } from "@/lib/prompt-builder";
 import { parseBboxResponse } from "@/lib/bbox-parser";
-import { isGeminiConfigured, identifyProductsInImage } from "@/lib/gemini";
+import { identifyProductsInImage } from "@/lib/gemini";
 import { isOpenAiConfigured, generateRoomDesign } from "@/lib/openai-images";
 
 const NUM_ALTERNATIVES = 4;

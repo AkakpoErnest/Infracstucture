@@ -23,7 +23,12 @@ export interface GeneratedImage {
 // v20.19.4 — this is a warning, not a hard failure (npm still installed it), and the
 // live smoke test below (see task report) confirms it works at runtime on this Node
 // version. Flagging in case a future Node upgrade becomes necessary for a later
-// `openai` release that enforces this.
+// `openai` release that enforces this. This project's own package.json now declares
+// `engines.node: ">=20.19.0"` documenting the actual current baseline (not the
+// `openai` package's aspirational >=22 requirement) — that Node-version mismatch
+// is a known, accepted gap: nothing enforces `engines` by default in npm, so this
+// stays silent unless someone runs `npm install` with `engine-strict` on, or
+// upgrades `openai` to a release that hard-requires 22 at runtime, not just install time.
 //
 // Confirmed API shape for `gpt-image-1` image editing (image-to-image restyle):
 //   - Method: `client.images.edit({ image, prompt, model, ... })` — NOT `generate`
@@ -70,6 +75,8 @@ function getClient(): OpenAI {
   return new OpenAI({ apiKey });
 }
 
+// TODO(2026-11-01): gpt-image-1 shuts down 2026-12-01 — switch OPENAI_IMAGE_MODEL to
+// gpt-image-2 before then.
 function getImageModel(): string {
   return process.env.OPENAI_IMAGE_MODEL || "gpt-image-1";
 }
