@@ -50,7 +50,7 @@ export function ProductDetailPanel({
           <dd>${product.price}</dd>
         </dl>
         <Button className="mt-4 w-full" disabled title="Purchasing isn't available yet">
-          Buy Now — Coming soon
+          Buy Now (Coming soon)
         </Button>
       </DialogContent>
     </Dialog>

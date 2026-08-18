@@ -5,56 +5,30 @@ import { Upload, Sparkles, ShoppingBag, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FeatureCard } from "@/components/landing/feature-card";
 import { HeroSceneLoader } from "@/components/landing/hero-scene-loader";
+import { LanguageSwitcher } from "@/components/landing/language-switcher";
+import { useLanguage } from "@/components/providers/language-provider";
 
-const FEATURES = [
-  {
-    icon: Upload,
-    title: "Upload your room",
-    description:
-      "Snap a photo of any room — living room, bedroom, kitchen, or office.",
-  },
-  {
-    icon: Sparkles,
-    title: "Get 4 AI redesigns",
-    description:
-      "Pick a style and budget; our AI generates four distinct, photorealistic redesigns.",
-  },
-  {
-    icon: ShoppingBag,
-    title: "Shop every product",
-    description:
-      "Every item in the design is real and clickable — see the price, brand, and details.",
-  },
-  {
-    icon: Wrench,
-    title: "Have us install it",
-    description:
-      "Buy the products yourself, or let our team handle the entire project.",
-  },
-];
-
-const STEPS = [
-  { number: "01", title: "Upload a photo", description: "Any room, any angle." },
-  { number: "02", title: "Set your style & budget", description: "Scandinavian, Japandi, Luxury, and more." },
-  { number: "03", title: "Review 4 designs", description: "Each one built entirely from our catalog." },
-  { number: "04", title: "Buy or book install", description: "Purchase products, or go fully turnkey." },
-];
+const FEATURE_ICONS = [Upload, Sparkles, ShoppingBag, Wrench];
+const STEP_NUMBERS = ["01", "02", "03", "04"];
 
 export default function HomePage() {
+  const { t } = useLanguage();
+
   return (
     <MotionConfig reducedMotion="user">
       <main className="flex min-h-screen flex-col">
         <nav className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur">
           <div className="mx-auto flex max-w-5xl items-center justify-between p-4">
             <span className="text-lg font-bold">Interior AI</span>
-            <div className="flex gap-3">
+            <div className="flex items-center gap-3">
+              <LanguageSwitcher />
               <Link href="/sign-in">
                 <Button variant="ghost" size="sm">
-                  Sign in
+                  {t.nav.signIn}
                 </Button>
               </Link>
               <Link href="/sign-up">
-                <Button size="sm">Sign up</Button>
+                <Button size="sm">{t.nav.signUp}</Button>
               </Link>
             </div>
           </div>
@@ -69,24 +43,24 @@ export default function HomePage() {
           <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-4 p-8 pt-16 sm:grid-cols-2 sm:pt-24">
             <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
               <motion.h1
+                key={t.hero.titleLine1}
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 className="text-4xl font-bold tracking-tight sm:text-5xl"
               >
-                Redesign your room with AI —
+                {t.hero.titleLine1}
                 <br />
-                shop every product in it.
+                {t.hero.titleLine2}
               </motion.h1>
               <motion.p
+                key={t.hero.subtitle}
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="max-w-md text-muted-foreground"
               >
-                Upload a photo of your room and get AI-generated redesigns
-                built entirely from real, purchasable products — no generic
-                internet furniture, ever.
+                {t.hero.subtitle}
               </motion.p>
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
@@ -95,11 +69,11 @@ export default function HomePage() {
                 className="flex gap-4"
               >
                 <Link href="/sign-up">
-                  <Button size="lg">Get started free</Button>
+                  <Button size="lg">{t.hero.getStarted}</Button>
                 </Link>
                 <Link href="/sign-in">
                   <Button variant="outline" size="lg">
-                    Sign in
+                    {t.hero.signIn}
                   </Button>
                 </Link>
               </motion.div>
@@ -119,8 +93,14 @@ export default function HomePage() {
 
         <section className="mx-auto w-full max-w-5xl p-8 py-16">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {FEATURES.map((f, i) => (
-              <FeatureCard key={f.title} {...f} delay={i * 0.08} />
+            {t.features.map((f, i) => (
+              <FeatureCard
+                key={f.title}
+                icon={FEATURE_ICONS[i]}
+                title={f.title}
+                description={f.description}
+                delay={i * 0.08}
+              />
             ))}
           </div>
         </section>
@@ -134,19 +114,19 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
               className="mb-10 text-center text-2xl font-bold"
             >
-              How it works
+              {t.howItWorks.heading}
             </motion.h2>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {STEPS.map((s, i) => (
+              {t.howItWorks.steps.map((s, i) => (
                 <motion.div
-                  key={s.number}
+                  key={s.title}
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
                   className="flex flex-col gap-2"
                 >
-                  <span className="text-sm font-mono text-primary/60">{s.number}</span>
+                  <span className="text-sm font-mono text-primary/60">{STEP_NUMBERS[i]}</span>
                   <h3 className="font-semibold">{s.title}</h3>
                   <p className="text-sm text-muted-foreground">{s.description}</p>
                 </motion.div>
@@ -163,19 +143,16 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="flex flex-col items-center gap-4"
           >
-            <h2 className="text-2xl font-bold">Ready to see your room reimagined?</h2>
-            <p className="max-w-sm text-muted-foreground">
-              It&apos;s free to try — sign up and upload your first room in
-              under a minute.
-            </p>
+            <h2 className="text-2xl font-bold">{t.cta.heading}</h2>
+            <p className="max-w-sm text-muted-foreground">{t.cta.subtitle}</p>
             <Link href="/sign-up">
-              <Button size="lg">Get started free</Button>
+              <Button size="lg">{t.cta.button}</Button>
             </Link>
           </motion.div>
         </section>
 
         <footer className="border-t border-border p-8 text-center text-sm text-muted-foreground">
-          Interior AI — AI-powered interior design & shopping platform.
+          {t.footer}
         </footer>
       </main>
     </MotionConfig>

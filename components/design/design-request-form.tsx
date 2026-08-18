@@ -145,7 +145,7 @@ export function DesignRequestForm({
               />
               {opt.label}
               {!opt.implemented && (
-                <span className="text-xs text-muted-foreground">(design only — purchasing coming soon)</span>
+                <span className="text-xs text-muted-foreground">(design only, purchasing coming soon)</span>
               )}
             </label>
           ))}

@@ -110,7 +110,7 @@ export function AlternativeGrid({
                     className="text-sm underline"
                     onClick={() => selectProduct(i.productId)}
                   >
-                    {i.product.name} — ${i.product.price}
+                    {i.product.name}: ${i.product.price}
                   </button>
                 </li>
               ))}

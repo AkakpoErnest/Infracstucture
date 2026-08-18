@@ -65,7 +65,7 @@ export async function POST(request: Request) {
 
   if (!isGeminiConfigured()) {
     return NextResponse.json(
-      { error: "AI generation is currently unavailable — no Gemini API key is configured." },
+      { error: "AI generation is currently unavailable. No Gemini API key is configured." },
       { status: 503 }
     );
   }

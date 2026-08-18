@@ -57,7 +57,7 @@ export default function MyDesignsPage() {
       {designs === null && <p className="text-sm text-muted-foreground">Loading...</p>}
       {designs?.length === 0 && (
         <p className="text-sm text-muted-foreground">
-          No designs yet — upload a room photo to get started.
+          No designs yet. Upload a room photo to get started.
         </p>
       )}
 
@@ -68,7 +68,7 @@ export default function MyDesignsPage() {
               <CardContent className="flex items-center justify-between p-4">
                 <div>
                   <CardTitle>
-                    {d.roomType} — {d.style}
+                    {d.roomType}, {d.style}
                   </CardTitle>
                   <p className="text-xs text-muted-foreground">
                     {new Date(d.createdAt).toLocaleDateString()}

@@ -57,7 +57,7 @@ export function RoomUpload({ onUploaded }: { onUploaded: (url: string) => void }
             className="h-full w-full rounded-lg object-cover"
           />
         ) : (
-          <span>Click to upload a photo of your room (JPG, PNG, WEBP — max 10MB)</span>
+          <span>Click to upload a photo of your room (JPG, PNG, WEBP, max 10MB)</span>
         )}
         <input
           type="file"
