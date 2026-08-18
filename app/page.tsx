@@ -4,6 +4,7 @@ import { motion, MotionConfig } from "framer-motion";
 import { Upload, Sparkles, ShoppingBag, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FeatureCard } from "@/components/landing/feature-card";
+import { HeroSceneLoader } from "@/components/landing/hero-scene-loader";
 
 const FEATURES = [
   {
@@ -65,41 +66,53 @@ export default function HomePage() {
             <div className="blob-float-delayed absolute -right-24 top-32 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
           </div>
 
-          <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 p-8 pt-20 text-center sm:pt-28">
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl font-bold tracking-tight sm:text-5xl"
-            >
-              Redesign your room with AI —
-              <br />
-              shop every product in it.
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="max-w-md text-muted-foreground"
-            >
-              Upload a photo of your room and get AI-generated redesigns built
-              entirely from real, purchasable products — no generic internet
-              furniture, ever.
-            </motion.p>
+          <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-4 p-8 pt-16 sm:grid-cols-2 sm:pt-24">
+            <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-4xl font-bold tracking-tight sm:text-5xl"
+              >
+                Redesign your room with AI —
+                <br />
+                shop every product in it.
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="max-w-md text-muted-foreground"
+              >
+                Upload a photo of your room and get AI-generated redesigns
+                built entirely from real, purchasable products — no generic
+                internet furniture, ever.
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="flex gap-4"
+              >
+                <Link href="/sign-up">
+                  <Button size="lg">Get started free</Button>
+                </Link>
+                <Link href="/sign-in">
+                  <Button variant="outline" size="lg">
+                    Sign in
+                  </Button>
+                </Link>
+              </motion.div>
+            </div>
+
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex gap-4"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="h-64 w-full sm:h-80"
+              aria-hidden
             >
-              <Link href="/sign-up">
-                <Button size="lg">Get started free</Button>
-              </Link>
-              <Link href="/sign-in">
-                <Button variant="outline" size="lg">
-                  Sign in
-                </Button>
-              </Link>
+              <HeroSceneLoader />
             </motion.div>
           </div>
         </section>
