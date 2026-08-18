@@ -1,4 +1,5 @@
 "use client";
+import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { HeroBlob } from "./hero-blob";
 
@@ -13,7 +14,10 @@ export function HeroScene({ reducedMotion }: { reducedMotion: boolean }) {
       <ambientLight intensity={0.6} />
       <directionalLight position={[3, 3, 4]} intensity={1.2} />
       <directionalLight position={[-3, -2, -3]} intensity={0.4} color="#a78bfa" />
-      <HeroBlob reducedMotion={reducedMotion} />
+      {/* useTexture (loading the room photo) suspends until it resolves */}
+      <Suspense fallback={null}>
+        <HeroBlob reducedMotion={reducedMotion} />
+      </Suspense>
     </Canvas>
   );
 }

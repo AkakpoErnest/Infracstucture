@@ -1,11 +1,17 @@
 "use client";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial } from "@react-three/drei";
+import { Float, MeshDistortMaterial, useTexture } from "@react-three/drei";
 import type { Mesh } from "three";
 
 export function HeroBlob({ reducedMotion }: { reducedMotion: boolean }) {
   const meshRef = useRef<Mesh>(null);
+  // A room photo mapped onto the distorted surface. Uses a sphere rather
+  // than the previous icosahedron — icosahedron UVs pinch badly at the
+  // poles and make a mapped photo look broken rather than liquid; a
+  // sphere's UVs are smooth and continuous, which is what makes the photo
+  // still read as a photo once it's warped across the surface.
+  const texture = useTexture("/images/hero/scandinavian-living-room.webp");
 
   useFrame((_, delta) => {
     if (reducedMotion || !meshRef.current) return;
@@ -20,9 +26,9 @@ export function HeroBlob({ reducedMotion }: { reducedMotion: boolean }) {
       floatIntensity={reducedMotion ? 0 : 1.2}
     >
       <mesh ref={meshRef}>
-        <icosahedronGeometry args={[1.4, 4]} />
+        <sphereGeometry args={[1.3, 64, 64]} />
         <MeshDistortMaterial
-          color="#e07a5f"
+          map={texture}
           distort={reducedMotion ? 0.15 : 0.4}
           speed={reducedMotion ? 0 : 1.8}
           roughness={0.15}
