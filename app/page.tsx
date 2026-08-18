@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, MotionConfig } from "framer-motion";
 import { Upload, Sparkles, ShoppingBag, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FeatureCard } from "@/components/landing/feature-card";
 import { HeroSceneLoader } from "@/components/landing/hero-scene-loader";
 import { LanguageSwitcher } from "@/components/landing/language-switcher";
+import { StyleGallery } from "@/components/landing/style-gallery";
 import { useLanguage } from "@/components/providers/language-provider";
 
 const FEATURE_ICONS = [Upload, Sparkles, ShoppingBag, Wrench];
@@ -35,6 +37,17 @@ export default function HomePage() {
         </nav>
 
         <section className="relative overflow-hidden">
+          <div aria-hidden className="absolute inset-0 -z-20">
+            <Image
+              src="/images/hero/scandinavian-living-room.webp"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/40" />
+          </div>
           <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
             <div className="blob-float absolute -left-24 -top-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
             <div className="blob-float-delayed absolute -right-24 top-32 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
@@ -105,6 +118,22 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section className="border-t border-border p-8 py-16">
+          <div className="mx-auto max-w-5xl">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-10 text-center"
+            >
+              <h2 className="text-2xl font-bold">{t.styles.heading}</h2>
+              <p className="mt-2 text-muted-foreground">{t.styles.subtitle}</p>
+            </motion.div>
+            <StyleGallery names={t.styles.names} />
+          </div>
+        </section>
+
         <section className="border-t border-border bg-muted/40">
           <div className="mx-auto max-w-5xl p-8 py-16">
             <motion.h2
@@ -135,20 +164,62 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-3xl p-8 py-20 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col items-center gap-4"
-          >
-            <h2 className="text-2xl font-bold">{t.cta.heading}</h2>
-            <p className="max-w-sm text-muted-foreground">{t.cta.subtitle}</p>
-            <Link href="/sign-up">
-              <Button size="lg">{t.cta.button}</Button>
-            </Link>
-          </motion.div>
+        <section className="border-t border-border p-8 py-16">
+          <div className="mx-auto max-w-5xl">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-8 text-center"
+            >
+              <h2 className="text-2xl font-bold">{t.beforeAfter.heading}</h2>
+              <p className="mt-2 text-muted-foreground">{t.beforeAfter.subtitle}</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6 }}
+              className="relative aspect-video overflow-hidden rounded-xl"
+            >
+              <Image
+                src="/images/before-after/japandi-room.webp"
+                alt="Empty room transformed into a fully styled Japandi living room"
+                fill
+                sizes="(min-width: 1024px) 1024px, 100vw"
+                className="object-cover"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="relative overflow-hidden border-t border-border">
+          <div aria-hidden className="absolute inset-0 -z-10">
+            <Image
+              src="/images/abstract/violet-fluid.webp"
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-background/90" />
+          </div>
+          <div className="mx-auto w-full max-w-3xl p-8 py-20 text-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col items-center gap-4"
+            >
+              <h2 className="text-2xl font-bold">{t.cta.heading}</h2>
+              <p className="max-w-sm text-muted-foreground">{t.cta.subtitle}</p>
+              <Link href="/sign-up">
+                <Button size="lg">{t.cta.button}</Button>
+              </Link>
+            </motion.div>
+          </div>
         </section>
 
         <footer className="border-t border-border p-8 text-center text-sm text-muted-foreground">

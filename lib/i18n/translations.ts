@@ -37,6 +37,25 @@ export const translations = {
           "Buy the products yourself, or let our team handle the entire project.",
       },
     ],
+    styles: {
+      heading: "Explore design styles",
+      subtitle: "Pick a look, then let our AI build it around your room.",
+      names: [
+        "Scandinavian",
+        "Japandi",
+        "Luxury",
+        "Industrial",
+        "Mediterranean",
+        "Bohemian",
+        "Rustic",
+        "Minimalist",
+      ],
+    },
+    beforeAfter: {
+      heading: "See the transformation",
+      subtitle:
+        "From an empty room to a fully styled space, built entirely from real products.",
+    },
     howItWorks: {
       heading: "How it works",
       steps: [
@@ -95,6 +114,25 @@ export const translations = {
           "Məhsulları özünüz alın, ya da komandamız bütün layihəni idarə etsin.",
       },
     ],
+    styles: {
+      heading: "Dizayn üslublarını kəşf edin",
+      subtitle: "Bir görünüş seçin, süni intellektimiz onu otağınıza uyğunlaşdırsın.",
+      names: [
+        "Skandinav",
+        "Japandi",
+        "Lüks",
+        "Sənaye",
+        "Aralıq dənizi",
+        "Boho",
+        "Rustik",
+        "Minimalist",
+      ],
+    },
+    beforeAfter: {
+      heading: "Dəyişikliyi görün",
+      subtitle:
+        "Boş otaqdan tamamilə real məhsullardan hazırlanmış dizayn edilmiş məkana.",
+    },
     howItWorks: {
       heading: "Necə işləyir",
       steps: [

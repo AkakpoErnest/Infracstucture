@@ -29,3 +29,11 @@ public/uploads/
 
 # typescript build cache
 *.tsbuildinfo
+
+# raw AI-generated marketing image source material (126MB of full-res PNGs
+# and duplicates) — optimized copies actually used by the site are checked
+# in under public/images/; this is just the source package, not app content
+/interior_design_website_assets/
+/*.png
+/Interior Design Website Image Set.md
+/asset-manifest.csv

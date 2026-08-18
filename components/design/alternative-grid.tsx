@@ -57,8 +57,17 @@ export function AlternativeGrid({
                 </button>
               )}
               {alt.status === "pending" && (
-                <div className="flex h-48 items-center justify-center text-sm text-muted-foreground">
-                  Generating...
+                <div className="relative flex h-48 items-center justify-center overflow-hidden rounded-md">
+                  <Image
+                    src="/images/abstract/wireframe-to-rendered.webp"
+                    alt=""
+                    fill
+                    sizes="400px"
+                    className="object-cover opacity-40"
+                  />
+                  <span className="relative rounded-md bg-background/80 px-3 py-1 text-sm text-muted-foreground backdrop-blur">
+                    Generating...
+                  </span>
                 </div>
               )}
               {alt.status === "failed" && (
