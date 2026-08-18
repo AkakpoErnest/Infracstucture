@@ -104,6 +104,36 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section className="border-t border-border p-8 py-16">
+          <div className="mx-auto max-w-5xl">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-8 text-center"
+            >
+              <h2 className="text-2xl font-bold">{t.beforeAfter.heading}</h2>
+              <p className="mt-2 text-muted-foreground">{t.beforeAfter.subtitle}</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6 }}
+              className="relative aspect-video overflow-hidden rounded-xl"
+            >
+              <Image
+                src="/images/before-after/japandi-room.webp"
+                alt="Empty room transformed into a fully styled Japandi living room"
+                fill
+                sizes="(min-width: 1024px) 1024px, 100vw"
+                className="object-cover"
+              />
+            </motion.div>
+          </div>
+        </section>
+
         <section className="mx-auto w-full max-w-5xl p-8 py-16">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {t.features.map((f, i) => (
@@ -161,36 +191,6 @@ export default function HomePage() {
                 </motion.div>
               ))}
             </div>
-          </div>
-        </section>
-
-        <section className="border-t border-border p-8 py-16">
-          <div className="mx-auto max-w-5xl">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5 }}
-              className="mb-8 text-center"
-            >
-              <h2 className="text-2xl font-bold">{t.beforeAfter.heading}</h2>
-              <p className="mt-2 text-muted-foreground">{t.beforeAfter.subtitle}</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6 }}
-              className="relative aspect-video overflow-hidden rounded-xl"
-            >
-              <Image
-                src="/images/before-after/japandi-room.webp"
-                alt="Empty room transformed into a fully styled Japandi living room"
-                fill
-                sizes="(min-width: 1024px) 1024px, 100vw"
-                className="object-cover"
-              />
-            </motion.div>
           </div>
         </section>
 

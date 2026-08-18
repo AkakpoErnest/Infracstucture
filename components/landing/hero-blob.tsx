@@ -22,7 +22,7 @@ export function HeroBlob({ reducedMotion }: { reducedMotion: boolean }) {
       <mesh ref={meshRef}>
         <icosahedronGeometry args={[1.4, 4]} />
         <MeshDistortMaterial
-          color="#6d5ef8"
+          color="#e07a5f"
           distort={reducedMotion ? 0.15 : 0.4}
           speed={reducedMotion ? 0 : 1.8}
           roughness={0.15}
