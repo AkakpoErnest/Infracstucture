@@ -1,10 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
-import fs from "fs/promises";
 
-export interface GeneratedImage {
-  base64: string;
-  mimeType: string;
-}
+// --- Scope note (2026-08-18) ---
+// This file previously also handled image *generation* (generateRoomDesign) via Gemini's
+// image-output models. That path has moved to lib/openai-images.ts (OpenAI's gpt-image-1)
+// because this project's Gemini account has zero quota for image-*generation* specifically
+// on its billing tier (confirmed via live testing — see lib/openai-images.ts's own
+// verification note). Gemini's text/vision capabilities, used below by
+// identifyProductsInImage to locate catalog products in an already-generated image, were
+// confirmed working fine in that same testing and are unaffected — this file now only
+// covers that product-identification/hotspot-detection path. `isGeminiConfigured()` is kept
+// (still gates identifyProductsInImage from app/api/designs/route.ts), but no longer gates
+// image generation.
 
 // --- API surface verification note ---
 // Verified 2026-08-17 against https://ai.google.dev/gemini-api/docs/image-generation,
@@ -57,44 +63,6 @@ function getImageModel(): string {
 
 export function isGeminiConfigured(): boolean {
   return Boolean(process.env.GEMINI_API_KEY);
-}
-
-/**
- * Generates one photorealistic room redesign image from a source room photo
- * and a text prompt describing the desired style and allowed products.
- */
-export async function generateRoomDesign(
-  roomPhotoPath: string,
-  prompt: string
-): Promise<GeneratedImage> {
-  const client = getClient();
-
-  const imageBytes = await fs.readFile(roomPhotoPath);
-  const mimeType = roomPhotoPath.endsWith(".png")
-    ? "image/png"
-    : roomPhotoPath.endsWith(".webp")
-    ? "image/webp"
-    : "image/jpeg";
-
-  const response = await client.models.generateContent({
-    model: getImageModel(),
-    contents: [
-      { inlineData: { data: imageBytes.toString("base64"), mimeType } },
-      { text: prompt },
-    ],
-  });
-
-  const parts = response.candidates?.[0]?.content?.parts ?? [];
-  const imagePart = parts.find((p) => p.inlineData?.data);
-
-  if (!imagePart?.inlineData?.data || !imagePart.inlineData.mimeType) {
-    throw new Error("Gemini response did not contain an image");
-  }
-
-  return {
-    base64: imagePart.inlineData.data,
-    mimeType: imagePart.inlineData.mimeType,
-  };
 }
 
 /**

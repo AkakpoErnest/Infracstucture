@@ -9,11 +9,8 @@ import { prisma } from "@/lib/prisma";
 import { buildCatalogShortlist, type CatalogProduct } from "@/lib/catalog-shortlist";
 import { buildDesignPrompt } from "@/lib/prompt-builder";
 import { parseBboxResponse } from "@/lib/bbox-parser";
-import {
-  isGeminiConfigured,
-  generateRoomDesign,
-  identifyProductsInImage,
-} from "@/lib/gemini";
+import { identifyProductsInImage } from "@/lib/gemini";
+import { isOpenAiConfigured, generateRoomDesign } from "@/lib/openai-images";
 
 const NUM_ALTERNATIVES = 4;
 
@@ -63,9 +60,9 @@ export async function POST(request: Request) {
   }
   const input = parsed.data;
 
-  if (!isGeminiConfigured()) {
+  if (!isOpenAiConfigured()) {
     return NextResponse.json(
-      { error: "AI generation is currently unavailable. No Gemini API key is configured." },
+      { error: "AI generation is currently unavailable. No OpenAI API key is configured." },
       { status: 503 }
     );
   }
