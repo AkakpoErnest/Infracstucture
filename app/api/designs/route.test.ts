@@ -26,13 +26,18 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-const mockIsConfigured = vi.fn();
-const mockGenerate = vi.fn();
+const mockIsGeminiConfigured = vi.fn();
 const mockIdentify = vi.fn();
 vi.mock("@/lib/gemini", () => ({
-  isGeminiConfigured: () => mockIsConfigured(),
-  generateRoomDesign: (...a: unknown[]) => mockGenerate(...a),
+  isGeminiConfigured: () => mockIsGeminiConfigured(),
   identifyProductsInImage: (...a: unknown[]) => mockIdentify(...a),
+}));
+
+const mockIsOpenAiConfigured = vi.fn();
+const mockGenerate = vi.fn();
+vi.mock("@/lib/openai-images", () => ({
+  isOpenAiConfigured: () => mockIsOpenAiConfigured(),
+  generateRoomDesign: (...a: unknown[]) => mockGenerate(...a),
 }));
 
 vi.mock("fs/promises", () => ({
@@ -73,7 +78,8 @@ describe("POST /api/designs", () => {
     mockAlternativeCreate.mockImplementation(({ data }: { data: Record<string, unknown> }) =>
       Promise.resolve({ id: `alt-${data.index}`, ...data })
     );
-    mockIsConfigured.mockReturnValue(true);
+    mockIsGeminiConfigured.mockReturnValue(true);
+    mockIsOpenAiConfigured.mockReturnValue(true);
     mockGenerate.mockResolvedValue({ base64: "ZmFrZQ==", mimeType: "image/png" });
     mockIdentify.mockResolvedValue(
       JSON.stringify([{ productId: "1", x: 0.1, y: 0.1, width: 0.3, height: 0.3 }])
@@ -111,8 +117,8 @@ describe("POST /api/designs", () => {
     expect(res.status).toBe(400);
   });
 
-  it("returns 503 with a clear message when Gemini is not configured", async () => {
-    mockIsConfigured.mockReturnValue(false);
+  it("returns 503 with a clear message when OpenAI is not configured", async () => {
+    mockIsOpenAiConfigured.mockReturnValue(false);
     const res = await POST(req(validBody));
     expect(res.status).toBe(503);
     const body = await res.json();
