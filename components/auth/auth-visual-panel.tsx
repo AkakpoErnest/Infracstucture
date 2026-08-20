@@ -78,7 +78,9 @@ function RotatingVisual() {
 export function AuthVisualPanel({ children }: { children: React.ReactNode }) {
   return (
     <main className="grid min-h-screen md:grid-cols-2">
-      <div className="flex flex-col justify-center gap-4 p-8">{children}</div>
+      <div className="mx-auto flex w-full max-w-sm flex-col justify-center gap-4 p-8">
+        {children}
+      </div>
       <div className="relative hidden h-full flex-col md:flex">
         <div className="flex-1">
           <AuthSceneLoader />
