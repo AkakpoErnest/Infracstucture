@@ -74,7 +74,7 @@ export function PostLoginHero({
   children: React.ReactNode;
 }) {
   return (
-    <main className="grid min-h-screen md:grid-cols-2">
+    <main className="grid min-h-[calc(100vh-65px)] md:grid-cols-2">
       <div className="flex flex-col justify-center gap-6 p-8">
         <div>
           <p className="text-sm text-muted-foreground">{greetingText(userName)}</p>
