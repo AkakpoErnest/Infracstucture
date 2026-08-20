@@ -31,7 +31,7 @@ export function AuthBlob({ reducedMotion }: { reducedMotion: boolean }) {
           map={texture}
           thickness={0.5}
           roughness={0.1}
-          transmission={1}
+          transmission={0.9}
           ior={1.2}
           chromaticAberration={0.03}
           distortion={0.1}
