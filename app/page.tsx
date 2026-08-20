@@ -21,16 +21,7 @@ export default function HomePage() {
       <main className="flex min-h-screen flex-col">
         <nav className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur">
           <div className="mx-auto flex max-w-5xl items-center justify-between p-4">
-            <span className="flex items-center gap-2">
-              <Image
-                src="/images/logo-icon.png"
-                alt="Afuna AI logo"
-                width={28}
-                height={28}
-                className="rounded-md"
-              />
-              <span className="text-lg font-bold">Afuna AI</span>
-            </span>
+            <span className="text-lg font-bold">Afuna AI</span>
             <div className="flex items-center gap-3">
               <LanguageSwitcher />
               <Link href="/sign-in">
