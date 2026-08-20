@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { RoomUpload } from "@/components/design/room-upload";
 import { DesignRequestForm } from "@/components/design/design-request-form";
 import { PostLoginHero } from "@/components/design/post-login-hero";
+import { AppHeader } from "@/components/layout/app-header";
 import type { DesignRequestInput } from "@/types/design";
 
 export default function NewDesignPage() {
@@ -41,13 +42,16 @@ export default function NewDesignPage() {
   }
 
   return (
-    <PostLoginHero userName={session?.user?.name}>
-      {!roomPhotoUrl ? (
-        <RoomUpload onUploaded={setRoomPhotoUrl} />
-      ) : (
-        <DesignRequestForm roomPhotoUrl={roomPhotoUrl} onSubmit={handleSubmit} submitting={submitting} />
-      )}
-      {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
-    </PostLoginHero>
+    <>
+      <AppHeader />
+      <PostLoginHero userName={session?.user?.name}>
+        {!roomPhotoUrl ? (
+          <RoomUpload onUploaded={setRoomPhotoUrl} />
+        ) : (
+          <DesignRequestForm roomPhotoUrl={roomPhotoUrl} onSubmit={handleSubmit} submitting={submitting} />
+        )}
+        {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+      </PostLoginHero>
+    </>
   );
 }
