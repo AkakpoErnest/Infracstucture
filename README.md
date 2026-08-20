@@ -32,8 +32,9 @@ built.
 ## Phase 3 progress
 
 Stack: Next.js 14 (App Router), TypeScript, Tailwind, shadcn-style
-components, Prisma + SQLite, NextAuth.js (credentials), Google Gemini
-(image generation + bounding-box product detection).
+components, Prisma + Postgres (Supabase), NextAuth.js (credentials),
+Replicate (Flux Kontext Pro — room-design image generation/editing),
+Claude (product bounding-box/hotspot detection).
 
 Built in a dedicated git worktree/branch (`worktree-ai-design-engine`, now
 merged into `main` and deleted) per the 16-task plan linked above:
@@ -69,15 +70,24 @@ all 16 tasks) additionally caught and fixed a missing auth check on the
 upload endpoint and one remaining unguarded fetch — both fixed and
 re-verified before merge.
 
-**Known limitation:** the `GEMINI_API_KEY` configured in this environment has
-zero image-generation quota on its current billing tier (confirmed via live
-API calls in Tasks 12 and 16), so real AI-generated images can't be produced
-here — every alternative currently comes back as a handled `failed` state
-with a quota error message rather than a rendered design. The code path for
-a working key is implemented and was verified against the real API for auth,
-request shape, and response parsing; only image-output itself is blocked by
-billing, not by anything in this codebase. Swapping in a key with
-image-generation quota should make designs render with no code changes.
+**Provider history (updated 2026-08-20):** image generation moved twice —
+Gemini (zero image-output quota on this project's billing tier, confirmed via
+live calls) → OpenAI's `gpt-image-1` → Replicate's Flux Kontext Pro, which is
+what's live today. Product bounding-box detection has also moved off Gemini,
+to Claude (`claude-sonnet-4-5`), at the user's request — Replicate's
+community-hosted vision models (Qwen2-VL, LLaVA) were tried first but were
+either blocked on credit or had no deployed version at all, and open VLMs are
+weaker at precise bounding-box coordinates besides. Both the image-generation
+and hotspot-detection paths were live-tested end-to-end (real API calls, real
+generated images, real parsed bounding boxes matching real catalog products)
+and confirmed working — this is not a mocked-only verification.
+
+Also fixed in that pass: `NEXTAUTH_SECRET` was missing from `.env.local`,
+which silently broke every login (CSRF verification failed, bouncing back to
+sign-in even with correct credentials) while signup kept working fine — easy
+to miss since it fails quietly rather than erroring loudly. Confirmed fixed
+via a live signup → login → session-check round trip, plus a live
+wrong-password-is-rejected check.
 
 **Also flagged, not yet addressed:** `npm audit` on the merged dependency
 tree reports multiple advisories against the pinned `next@14.2.15`

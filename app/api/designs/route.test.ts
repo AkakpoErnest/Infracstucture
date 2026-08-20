@@ -28,10 +28,10 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-const mockIsGeminiConfigured = vi.fn();
+const mockIsClaudeConfigured = vi.fn();
 const mockIdentify = vi.fn();
-vi.mock("@/lib/gemini", () => ({
-  isGeminiConfigured: () => mockIsGeminiConfigured(),
+vi.mock("@/lib/claude-vision", () => ({
+  isClaudeConfigured: () => mockIsClaudeConfigured(),
   identifyProductsInImage: (...a: unknown[]) => mockIdentify(...a),
 }));
 
@@ -80,7 +80,7 @@ describe("POST /api/designs", () => {
     mockAlternativeCreate.mockImplementation(({ data }: { data: Record<string, unknown> }) =>
       Promise.resolve({ id: `alt-${data.index}`, ...data })
     );
-    mockIsGeminiConfigured.mockReturnValue(true);
+    mockIsClaudeConfigured.mockReturnValue(true);
     mockIsReplicateConfigured.mockReturnValue(true);
     mockDesignCount.mockResolvedValue(0);
     mockGenerate.mockResolvedValue({ base64: "ZmFrZQ==", mimeType: "image/png" });

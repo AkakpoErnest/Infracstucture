@@ -9,7 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { buildCatalogShortlist, type CatalogProduct } from "@/lib/catalog-shortlist";
 import { buildDesignPrompt } from "@/lib/prompt-builder";
 import { parseBboxResponse } from "@/lib/bbox-parser";
-import { identifyProductsInImage } from "@/lib/gemini";
+import { identifyProductsInImage } from "@/lib/claude-vision";
 import { isReplicateConfigured, generateRoomDesign } from "@/lib/replicate-images";
 
 const NUM_ALTERNATIVES = 4;
@@ -103,8 +103,8 @@ export async function POST(request: Request) {
     );
   }
 
-  // Used below to filter Gemini's bounding-box response: DesignItem.productId
-  // has a foreign-key constraint against Product.id, so if Gemini hallucinates
+  // Used below to filter Claude's bounding-box response: DesignItem.productId
+  // has a foreign-key constraint against Product.id, so if Claude hallucinates
   // a productId that wasn't in the shortlist we sent it, createMany would
   // reject the *entire* batch for that alternative (Prisma FK violation),
   // silently discarding hotspots for every correctly-identified product too.
@@ -156,7 +156,7 @@ export async function POST(request: Request) {
           );
           const boxes = parseBboxResponse(raw);
           // Drop any hallucinated productId that isn't in the shortlist we
-          // actually sent to Gemini — see comment on shortlistIds above.
+          // actually sent to Claude — see comment on shortlistIds above.
           const validBoxes = boxes.filter((b) => shortlistIds.has(b.productId));
           if (validBoxes.length > 0) {
             await prisma.designItem.createMany({

@@ -36,7 +36,7 @@ export interface GeneratedImage {
 // exactly as OpenAI's version did (callers/route.ts are unchanged).
 //
 // The model id is overridable via REPLICATE_IMAGE_MODEL (.env.local / .env.example),
-// matching the GEMINI_IMAGE_MODEL / OPENAI_IMAGE_MODEL precedent for model churn.
+// matching the ANTHROPIC_VISION_MODEL / OPENAI_IMAGE_MODEL precedent for model churn.
 
 function getModel(): string {
   return process.env.REPLICATE_IMAGE_MODEL || "black-forest-labs/flux-kontext-pro";
