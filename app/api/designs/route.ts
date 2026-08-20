@@ -10,9 +10,10 @@ import { buildCatalogShortlist, type CatalogProduct } from "@/lib/catalog-shortl
 import { buildDesignPrompt } from "@/lib/prompt-builder";
 import { parseBboxResponse } from "@/lib/bbox-parser";
 import { identifyProductsInImage } from "@/lib/gemini";
-import { isOpenAiConfigured, generateRoomDesign } from "@/lib/openai-images";
+import { isReplicateConfigured, generateRoomDesign } from "@/lib/replicate-images";
 
 const NUM_ALTERNATIVES = 4;
+const DAILY_DESIGN_LIMIT = 4;
 
 const designRequestSchema = z.object({
   roomPhotoUrl: z.string().regex(/^\/uploads\/rooms\/[\w-]+\.(png|jpe?g|webp)$/),
@@ -60,10 +61,24 @@ export async function POST(request: Request) {
   }
   const input = parsed.data;
 
-  if (!isOpenAiConfigured()) {
+  if (!isReplicateConfigured()) {
     return NextResponse.json(
-      { error: "AI generation is currently unavailable. No OpenAI API key is configured." },
+      { error: "AI generation is currently unavailable. No Replicate API token is configured." },
       { status: 503 }
+    );
+  }
+
+  const startOfToday = new Date();
+  startOfToday.setUTCHours(0, 0, 0, 0);
+  const designsToday = await prisma.design.count({
+    where: { userId, createdAt: { gte: startOfToday } },
+  });
+  if (designsToday >= DAILY_DESIGN_LIMIT) {
+    return NextResponse.json(
+      {
+        error: `Daily limit reached (${DAILY_DESIGN_LIMIT} designs per day). Please try again tomorrow.`,
+      },
+      { status: 429 }
     );
   }
 

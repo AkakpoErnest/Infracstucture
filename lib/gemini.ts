@@ -1,11 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 
-// --- Scope note (2026-08-18) ---
+// --- Scope note (2026-08-18, updated 2026-08-20) ---
 // This file previously also handled image *generation* (generateRoomDesign) via Gemini's
-// image-output models. That path has moved to lib/openai-images.ts (OpenAI's gpt-image-1)
+// image-output models. That path moved to lib/openai-images.ts (OpenAI's gpt-image-1)
 // because this project's Gemini account has zero quota for image-*generation* specifically
-// on its billing tier (confirmed via live testing — see lib/openai-images.ts's own
-// verification note). Gemini's text/vision capabilities, used below by
+// on its billing tier (confirmed via live testing), and has since moved again to
+// lib/replicate-images.ts (Flux Kontext Pro via Replicate) — see that file's own
+// verification note for why. Gemini's text/vision capabilities, used below by
 // identifyProductsInImage to locate catalog products in an already-generated image, were
 // confirmed working fine in that same testing and are unaffected — this file now only
 // covers that product-identification/hotspot-detection path. `isGeminiConfigured()` is kept
