@@ -4,7 +4,7 @@ import { SessionProvider } from "@/components/providers/session-provider";
 import { LanguageProvider } from "@/components/providers/language-provider";
 
 export const metadata: Metadata = {
-  title: "Interior AI",
+  title: "Afuna AI",
   description: "AI-powered interior design & shopping platform",
 };
 

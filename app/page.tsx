@@ -24,12 +24,12 @@ export default function HomePage() {
             <span className="flex items-center gap-2">
               <Image
                 src="/images/logo-icon.png"
-                alt="Interior AI logo"
+                alt="Afuna AI logo"
                 width={28}
                 height={28}
                 className="rounded-md"
               />
-              <span className="text-lg font-bold">Interior AI</span>
+              <span className="text-lg font-bold">Afuna AI</span>
             </span>
             <div className="flex items-center gap-3">
               <LanguageSwitcher />

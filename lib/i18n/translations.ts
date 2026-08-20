@@ -80,7 +80,7 @@ export const translations = {
         "It's free to try. Sign up and upload your first room in under a minute.",
       button: "Get started free",
     },
-    footer: "Interior AI: AI-powered interior design & shopping platform.",
+    footer: "Afuna AI: AI-powered interior design & shopping platform.",
   },
   az: {
     nav: { signIn: "Daxil ol", signUp: "Qeydiyyat" },
@@ -158,7 +158,7 @@ export const translations = {
       button: "Pulsuz başlayın",
     },
     footer:
-      "Interior AI — Süni intellektlə interyer dizaynı və alış-veriş platforması.",
+      "Afuna AI — Süni intellektlə interyer dizaynı və alış-veriş platforması.",
   },
 } as const;
 
