@@ -7,6 +7,7 @@ vi.mock("@/lib/auth", () => ({ authOptions: {} }));
 const mockFindMany = vi.fn();
 const mockDesignCreate = vi.fn();
 const mockDesignFindMany = vi.fn();
+const mockDesignCount = vi.fn();
 const mockAlternativeCreate = vi.fn();
 const mockAlternativeUpdate = vi.fn();
 const mockDesignItemCreateMany = vi.fn();
@@ -17,6 +18,7 @@ vi.mock("@/lib/prisma", () => ({
     design: {
       create: (...a: unknown[]) => mockDesignCreate(...a),
       findMany: (...a: unknown[]) => mockDesignFindMany(...a),
+      count: (...a: unknown[]) => mockDesignCount(...a),
     },
     designAlternative: {
       create: (...a: unknown[]) => mockAlternativeCreate(...a),
@@ -33,10 +35,10 @@ vi.mock("@/lib/gemini", () => ({
   identifyProductsInImage: (...a: unknown[]) => mockIdentify(...a),
 }));
 
-const mockIsOpenAiConfigured = vi.fn();
+const mockIsReplicateConfigured = vi.fn();
 const mockGenerate = vi.fn();
-vi.mock("@/lib/openai-images", () => ({
-  isOpenAiConfigured: () => mockIsOpenAiConfigured(),
+vi.mock("@/lib/replicate-images", () => ({
+  isReplicateConfigured: () => mockIsReplicateConfigured(),
   generateRoomDesign: (...a: unknown[]) => mockGenerate(...a),
 }));
 
@@ -79,7 +81,8 @@ describe("POST /api/designs", () => {
       Promise.resolve({ id: `alt-${data.index}`, ...data })
     );
     mockIsGeminiConfigured.mockReturnValue(true);
-    mockIsOpenAiConfigured.mockReturnValue(true);
+    mockIsReplicateConfigured.mockReturnValue(true);
+    mockDesignCount.mockResolvedValue(0);
     mockGenerate.mockResolvedValue({ base64: "ZmFrZQ==", mimeType: "image/png" });
     mockIdentify.mockResolvedValue(
       JSON.stringify([{ productId: "1", x: 0.1, y: 0.1, width: 0.3, height: 0.3 }])
@@ -117,12 +120,38 @@ describe("POST /api/designs", () => {
     expect(res.status).toBe(400);
   });
 
-  it("returns 503 with a clear message when OpenAI is not configured", async () => {
-    mockIsOpenAiConfigured.mockReturnValue(false);
+  it("returns 503 with a clear message when Replicate is not configured", async () => {
+    mockIsReplicateConfigured.mockReturnValue(false);
     const res = await POST(req(validBody));
     expect(res.status).toBe(503);
     const body = await res.json();
     expect(body.error).toMatch(/unavailable/i);
+  });
+
+  it("returns 429 with a clear message once the user hits the daily design limit", async () => {
+    mockDesignCount.mockResolvedValue(4);
+    const res = await POST(req(validBody));
+    expect(res.status).toBe(429);
+    const body = await res.json();
+    expect(body.error).toMatch(/daily limit/i);
+    // Should reject before doing any generation work.
+    expect(mockDesignCreate).not.toHaveBeenCalled();
+    expect(mockGenerate).not.toHaveBeenCalled();
+  });
+
+  it("scopes the daily design count to the signed-in user", async () => {
+    await POST(req(validBody));
+    expect(mockDesignCount).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ userId: "u1" }),
+      })
+    );
+  });
+
+  it("allows generation when the user is just under the daily limit", async () => {
+    mockDesignCount.mockResolvedValue(3);
+    const res = await POST(req(validBody));
+    expect(res.status).toBe(201);
   });
 
   it("generates 4 alternatives and returns the design id on success", async () => {
