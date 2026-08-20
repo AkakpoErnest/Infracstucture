@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AuthVisualPanel } from "@/components/auth/auth-visual-panel";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -53,7 +54,7 @@ export default function SignUpPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-4 p-8">
+    <AuthVisualPanel>
       <h1 className="text-2xl font-bold">Create an account</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
@@ -94,6 +95,6 @@ export default function SignUpPage() {
           {loading ? "Creating account..." : "Sign up"}
         </Button>
       </form>
-    </main>
+    </AuthVisualPanel>
   );
 }
