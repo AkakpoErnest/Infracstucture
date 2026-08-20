@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { AlternativeGrid, type Alternative } from "@/components/design/alternative-grid";
+import { AppHeader } from "@/components/layout/app-header";
 
 interface DesignResponse {
   id: string;
@@ -70,17 +71,25 @@ export default function DesignResultsPage({ params }: { params: { id: string } }
 
   if (error) {
     return (
-      <main className="mx-auto max-w-xl p-8">
-        <p className="text-sm text-destructive">{error}</p>
-        <Link href="/design/new" className="mt-4 inline-block text-sm underline">
-          Start a new design
-        </Link>
-      </main>
+      <>
+        <AppHeader />
+        <main className="mx-auto max-w-xl p-8">
+          <p className="text-sm text-destructive">{error}</p>
+          <Link href="/design/new" className="mt-4 inline-block text-sm underline">
+            Start a new design
+          </Link>
+        </main>
+      </>
     );
   }
 
   if (!design) {
-    return <main className="p-8">Loading...</main>;
+    return (
+      <>
+        <AppHeader />
+        <main className="p-8">Loading...</main>
+      </>
+    );
   }
 
   const alternatives: Alternative[] = design.alternatives.map((a) => ({
@@ -110,9 +119,12 @@ export default function DesignResultsPage({ params }: { params: { id: string } }
   }));
 
   return (
-    <main className="mx-auto max-w-4xl p-8">
-      <h1 className="mb-6 text-2xl font-bold">Your designs</h1>
-      <AlternativeGrid alternatives={alternatives} onRegenerate={() => load()} />
-    </main>
+    <>
+      <AppHeader />
+      <main className="mx-auto max-w-4xl p-8">
+        <h1 className="mb-6 text-2xl font-bold">Your designs</h1>
+        <AlternativeGrid alternatives={alternatives} onRegenerate={() => load()} />
+      </main>
+    </>
   );
 }
