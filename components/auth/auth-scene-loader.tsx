@@ -6,8 +6,12 @@ const AuthScene = dynamic(
   () => import("./auth-scene").then((m) => m.AuthScene),
   {
     ssr: false,
+    // rounded-2xl rather than rounded-full: this loader is composed into a
+    // short/wide half of a stacked column (AuthVisualPanel), where a
+    // full-circle skeleton would render as an odd stadium/pill shape
+    // instead of approximating the plain-rectangle canvas it becomes.
     loading: () => (
-      <div className="h-full w-full animate-pulse rounded-full bg-primary/5" />
+      <div className="h-full w-full animate-pulse rounded-2xl bg-primary/5" />
     ),
   }
 );
