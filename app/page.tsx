@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { FeatureCard } from "@/components/landing/feature-card";
 import { HeroSceneLoader } from "@/components/landing/hero-scene-loader";
 import { ProcessSceneLoader } from "@/components/landing/process-scene-loader";
+import { DifferentSceneLoader } from "@/components/landing/different-scene-loader";
 import { LanguageSwitcher } from "@/components/landing/language-switcher";
 import { StyleGallery } from "@/components/landing/style-gallery";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -205,6 +206,10 @@ export default function HomePage() {
             >
               <h2 className="text-2xl font-bold">{t.benefits.heading}</h2>
               <p className="mt-2 text-muted-foreground">{t.benefits.subtitle}</p>
+              <span
+                aria-hidden
+                className="mx-auto mt-4 block h-0.5 w-12 rounded-full bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+              />
             </motion.div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {t.benefits.items.map((b, i) => (
@@ -231,13 +236,23 @@ export default function HomePage() {
             >
               <h2 className="text-2xl font-bold">{t.styles.heading}</h2>
               <p className="mt-2 text-muted-foreground">{t.styles.subtitle}</p>
+              <span
+                aria-hidden
+                className="mx-auto mt-4 block h-0.5 w-12 rounded-full bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+              />
             </motion.div>
             <StyleGallery names={t.styles.names} />
           </div>
         </section>
 
-        <section className="border-t border-border bg-muted/40 p-8 py-16">
-          <div className="mx-auto max-w-3xl">
+        <section className="relative overflow-hidden border-t border-border bg-muted/40 p-8 py-16">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -left-12 -top-12 hidden h-64 w-64 opacity-40 sm:block"
+          >
+            <DifferentSceneLoader />
+          </div>
+          <div className="relative mx-auto max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -247,6 +262,10 @@ export default function HomePage() {
             >
               <h2 className="text-2xl font-bold">{t.different.heading}</h2>
               <p className="mt-2 text-muted-foreground">{t.different.subtitle}</p>
+              <span
+                aria-hidden
+                className="mx-auto mt-4 block h-0.5 w-12 rounded-full bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+              />
             </motion.div>
             <div className="flex flex-col gap-4">
               {t.different.comparisons.map((c, i) => (
@@ -289,34 +308,41 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="group overflow-hidden rounded-2xl border border-border shadow-lg"
+              className="group mx-auto max-w-2xl rounded-2xl border border-border bg-card p-3 shadow-lg sm:p-4"
             >
-              <div className="relative aspect-[4/3] w-full sm:aspect-[16/10]">
+              {/* Mat-frame treatment: padded card border around the photo,
+                  like a physical picture frame, rather than the photo
+                  bleeding edge-to-edge. */}
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg ring-1 ring-inset ring-border sm:aspect-[16/10]">
                 <Image
                   src="/images/team/founders.webp"
                   alt="The Afuna AI team"
                   fill
-                  sizes="(min-width: 768px) 768px, 100vw"
+                  sizes="(min-width: 768px) 672px, 100vw"
                   className="object-cover object-top grayscale transition-all duration-500 group-hover:grayscale-0"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
               </div>
+
+              {/* Plaque: a single structured row naming everyone in the
+                  photo above, rather than a disconnected grid of cards. */}
+              <div className="mt-3 grid grid-cols-1 divide-y divide-border rounded-lg border border-border sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+                {t.team.members.map((m, i) => (
+                  <motion.div
+                    key={m.name}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.5, delay: 0.15 + i * 0.08 }}
+                    className="flex items-center justify-center gap-2 p-4 text-center"
+                  >
+                    <p className="font-semibold">{m.name}</p>
+                    <span className="text-muted-foreground">·</span>
+                    <p className="text-sm text-muted-foreground">{m.role}</p>
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
-            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {t.team.members.map((m, i) => (
-                <motion.div
-                  key={m.name}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.5, delay: 0.15 + i * 0.08 }}
-                  className="rounded-lg border border-border p-4 text-center"
-                >
-                  <p className="font-semibold">{m.name}</p>
-                  <p className="text-sm text-muted-foreground">{m.role}</p>
-                </motion.div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -340,6 +366,10 @@ export default function HomePage() {
               className="flex flex-col items-center gap-4"
             >
               <h2 className="text-2xl font-bold">{t.cta.heading}</h2>
+              <span
+                aria-hidden
+                className="block h-0.5 w-12 rounded-full bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+              />
               <p className="max-w-sm text-muted-foreground">{t.cta.subtitle}</p>
               <Link href="/sign-up">
                 <Button size="lg">{t.cta.button}</Button>
