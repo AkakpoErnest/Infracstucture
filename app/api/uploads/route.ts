@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 import { randomUUID } from "crypto";
 import { authOptions } from "@/lib/auth";
 
@@ -35,13 +34,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "File exceeds 10MB limit" }, { status: 400 });
   }
 
-  const uploadDir = path.join(process.cwd(), "public", "uploads", "rooms");
-  await mkdir(uploadDir, { recursive: true });
-
+  // Vercel's production functions have a read-only filesystem outside
+  // /tmp, so writing uploads to disk (the old approach) only ever worked
+  // locally and 500'd in production. Vercel Blob gives every upload a
+  // real, publicly-fetchable URL that works in both environments.
   const ext = EXT_BY_TYPE[file.type];
-  const filename = `${randomUUID()}.${ext}`;
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(path.join(uploadDir, filename), buffer);
+  const filename = `rooms/${randomUUID()}.${ext}`;
+  const blob = await put(filename, file, {
+    access: "public",
+    contentType: file.type,
+  });
 
-  return NextResponse.json({ url: `/uploads/rooms/${filename}` }, { status: 201 });
+  return NextResponse.json({ url: blob.url }, { status: 201 });
 }
