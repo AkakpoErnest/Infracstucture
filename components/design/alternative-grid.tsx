@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { HotspotOverlay } from "./hotspot-overlay";
@@ -33,6 +33,55 @@ export function AlternativeGrid({
 }) {
   const [active, setActive] = useState<Alternative | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<ProductDetail | null>(null);
+  const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/favorites");
+        if (!res.ok) return;
+        const products: ProductDetail[] = await res.json();
+        setFavoriteIds(new Set(products.map((p) => p.id)));
+      } catch {
+        // Favorites are non-critical to the core design-viewing flow - a
+        // failed fetch just means every heart starts unfilled, not an
+        // app-breaking error.
+      }
+    })();
+  }, []);
+
+  async function toggleFavorite(productId: string) {
+    const alreadyFavorited = favoriteIds.has(productId);
+
+    // Optimistic update - the heart flips immediately, the request
+    // confirms it in the background.
+    setFavoriteIds((prev) => {
+      const next = new Set(prev);
+      if (alreadyFavorited) next.delete(productId);
+      else next.add(productId);
+      return next;
+    });
+
+    try {
+      if (alreadyFavorited) {
+        await fetch(`/api/favorites/${productId}`, { method: "DELETE" });
+      } else {
+        await fetch("/api/favorites", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productId }),
+        });
+      }
+    } catch {
+      // Revert the optimistic update if the request actually failed.
+      setFavoriteIds((prev) => {
+        const next = new Set(prev);
+        if (alreadyFavorited) next.add(productId);
+        else next.delete(productId);
+        return next;
+      });
+    }
+  }
 
   function selectProduct(productId: string) {
     const item = active?.items.find((i) => i.productId === productId);
@@ -132,6 +181,8 @@ export function AlternativeGrid({
         product={selectedProduct}
         open={Boolean(selectedProduct)}
         onOpenChange={(open) => !open && setSelectedProduct(null)}
+        isFavorited={selectedProduct ? favoriteIds.has(selectedProduct.id) : false}
+        onToggleFavorite={() => selectedProduct && toggleFavorite(selectedProduct.id)}
       />
     </div>
   );
