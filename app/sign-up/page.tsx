@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AuthVisualPanel } from "@/components/auth/auth-visual-panel";
+import { offerToSaveCredentials } from "@/lib/save-credentials";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -42,6 +43,7 @@ export default function SignUpPage() {
 
       const signInResult = await signIn("credentials", { email, password, redirect: false });
       if (signInResult?.ok) {
+        await offerToSaveCredentials(email, password, name);
         router.push("/design/new");
       } else {
         router.push("/sign-in");
