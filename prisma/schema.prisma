@@ -15,6 +15,7 @@ model User {
   name         String
   createdAt    DateTime @default(now())
   designs      Design[]
+  favorites    Favorite[]
 }
 
 model Brand {
@@ -37,6 +38,7 @@ model Product {
   dimensions  String
   imageUrl    String
   designItems DesignItem[]
+  favorites   Favorite[]
 
   @@index([brandId])
 }
@@ -86,4 +88,16 @@ model DesignItem {
 
   @@index([designAlternativeId])
   @@index([productId])
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
 }
