@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { AuthSceneLoader } from "./auth-scene-loader";
+import { HouseSceneLoader } from "@/components/landing/house-scene-loader";
 
 // Same rotating-crossfade pattern as components/design/post-login-hero.tsx,
 // with a different image set (none shared with the homepage or the
@@ -80,18 +81,18 @@ export function AuthVisualPanel({ children }: { children: React.ReactNode }) {
   return (
     <main className="grid min-h-screen md:grid-cols-2">
       <div className="relative flex flex-col justify-center overflow-hidden p-8">
-        {/* Same 3D glass icosahedron as the right-hand panel (or the only
-            3D on screen at all on mobile, where that panel is hidden) -
-            rendered large, centered, and very low-opacity directly behind
-            the form itself, on every screen size. Inputs have an opaque
-            bg-background so text stays perfectly legible; this only shows
-            through the surrounding whitespace. */}
+        {/* Same house motif as the homepage's Benefits section - rendered
+            large, centered, and very low-opacity directly behind the form
+            itself, on every screen size (the only 3D visible at all on
+            mobile, where the right-hand panel below is hidden). Inputs
+            have an opaque bg-background so text stays perfectly legible;
+            this only shows through the surrounding whitespace. */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.12]"
         >
           <div className="h-[28rem] w-[28rem]">
-            <AuthSceneLoader />
+            <HouseSceneLoader />
           </div>
         </div>
         <div className="relative mx-auto flex w-full max-w-sm flex-col gap-4">
