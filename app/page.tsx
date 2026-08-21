@@ -2,7 +2,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, MotionConfig } from "framer-motion";
-import { Upload, Sparkles, ShoppingBag, Wrench } from "lucide-react";
+import {
+  Upload,
+  Sparkles,
+  ShoppingBag,
+  Wrench,
+  Eye,
+  PiggyBank,
+  ShieldCheck,
+  XCircle,
+  CheckCircle2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FeatureCard } from "@/components/landing/feature-card";
 import { HeroSceneLoader } from "@/components/landing/hero-scene-loader";
@@ -11,6 +21,7 @@ import { StyleGallery } from "@/components/landing/style-gallery";
 import { useLanguage } from "@/components/providers/language-provider";
 
 const FEATURE_ICONS = [Upload, Sparkles, ShoppingBag, Wrench];
+const BENEFIT_ICONS = [Eye, ShoppingBag, PiggyBank, ShieldCheck];
 const STEP_NUMBERS = ["01", "02", "03", "04"];
 
 export default function HomePage() {
@@ -134,6 +145,32 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section className="border-t border-border p-8 py-16">
+          <div className="mx-auto max-w-5xl">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-10 text-center"
+            >
+              <h2 className="text-2xl font-bold">{t.benefits.heading}</h2>
+              <p className="mt-2 text-muted-foreground">{t.benefits.subtitle}</p>
+            </motion.div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {t.benefits.items.map((b, i) => (
+                <FeatureCard
+                  key={b.title}
+                  icon={BENEFIT_ICONS[i]}
+                  title={b.title}
+                  description={b.description}
+                  delay={i * 0.08}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="mx-auto w-full max-w-5xl p-8 py-16">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {t.features.map((f, i) => (
@@ -145,6 +182,42 @@ export default function HomePage() {
                 delay={i * 0.08}
               />
             ))}
+          </div>
+        </section>
+
+        <section className="border-t border-border bg-muted/40 p-8 py-16">
+          <div className="mx-auto max-w-3xl">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-10 text-center"
+            >
+              <h2 className="text-2xl font-bold">{t.different.heading}</h2>
+              <p className="mt-2 text-muted-foreground">{t.different.subtitle}</p>
+            </motion.div>
+            <div className="flex flex-col gap-4">
+              {t.different.comparisons.map((c, i) => (
+                <motion.div
+                  key={c.new}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="grid grid-cols-1 gap-3 rounded-lg border border-border bg-background p-4 sm:grid-cols-2"
+                >
+                  <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive/70" />
+                    <span>{c.old}</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm font-medium">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <span>{c.new}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 

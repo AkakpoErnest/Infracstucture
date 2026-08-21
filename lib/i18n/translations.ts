@@ -37,6 +37,50 @@ export const translations = {
           "Buy the products yourself, or let our team handle the entire project.",
       },
     ],
+    benefits: {
+      heading: "Why people use Afuna AI",
+      subtitle: "Real outcomes, not just pretty pictures.",
+      items: [
+        {
+          title: "See it before you buy it",
+          description:
+            "Know exactly how a piece will look in your actual room before you spend a cent — not a showroom, not a guess.",
+        },
+        {
+          title: "Every item is real and buyable",
+          description:
+            "No generic AI furniture that doesn't exist. Every piece in your design links to a real product you can purchase today.",
+        },
+        {
+          title: "Save thousands vs. a designer",
+          description:
+            "Get four professional-quality redesigns in minutes — free to try — instead of weeks of consultations and design fees.",
+        },
+        {
+          title: "No more returns, no more regrets",
+          description:
+            "Skip the guesswork of buying furniture that doesn't fit your space or match your style — see it working together first.",
+        },
+      ],
+    },
+    different: {
+      heading: "How Afuna AI is different",
+      subtitle: "Compared to the alternatives.",
+      comparisons: [
+        {
+          old: "Generic AI design apps show furniture that doesn't exist and can't be bought.",
+          new: "Every item Afuna AI shows you is real, priced, and one click from checkout.",
+        },
+        {
+          old: "Hiring an interior designer takes weeks and costs thousands in fees.",
+          new: "Afuna AI gives you four professional redesigns in minutes, free to try.",
+        },
+        {
+          old: "Buying furniture online means guessing whether it'll fit or match.",
+          new: "Afuna AI shows it in your actual room first, so you buy with confidence.",
+        },
+      ],
+    },
     styles: {
       heading: "Explore design styles",
       subtitle: "Pick a look, then let our AI build it around your room.",
@@ -114,6 +158,50 @@ export const translations = {
           "Məhsulları özünüz alın, ya da komandamız bütün layihəni idarə etsin.",
       },
     ],
+    benefits: {
+      heading: "İnsanlar niyə Afuna AI istifadə edir",
+      subtitle: "Sadəcə gözəl şəkillər deyil, real nəticələr.",
+      items: [
+        {
+          title: "Almazdan əvvəl görün",
+          description:
+            "Bir əşyanın otağınızda necə görünəcəyini bir qəpik xərcləmədən dəqiq bilin — nümayiş zalı deyil, təxmin deyil.",
+        },
+        {
+          title: "Hər əşya realdır və satın alına bilər",
+          description:
+            "Mövcud olmayan ümumi süni intellekt mebeli yoxdur. Dizaynınızdakı hər əşya bu gün satın ala biləcəyiniz real məhsula bağlıdır.",
+        },
+        {
+          title: "Dizaynerdən minlərlə qənaət edin",
+          description:
+            "Həftələrlə konsultasiya və dizayn haqqı əvəzinə, dəqiqələr içində dörd peşəkar dizayn əldə edin — sınamaq pulsuzdur.",
+        },
+        {
+          title: "Daha çox geri qaytarma, daha çox peşmançılıq yox",
+          description:
+            "Məkanınıza uyğun olmayan və ya üslubunuzla uyğunlaşmayan mebel almaq təxmini buraxın — əvvəlcə birlikdə necə işlədiyini görün.",
+        },
+      ],
+    },
+    different: {
+      heading: "Afuna AI necə fərqlidir",
+      subtitle: "Alternativlərlə müqayisədə.",
+      comparisons: [
+        {
+          old: "Adi süni intellekt dizayn tətbiqləri mövcud olmayan və alına bilməyən mebel göstərir.",
+          new: "Afuna AI-nin göstərdiyi hər əşya realdır, qiymətləndirilib və bir kliklə satın almağa hazırdır.",
+        },
+        {
+          old: "İnteryer dizayneri işə götürmək həftələr çəkir və minlərlə haqq tələb edir.",
+          new: "Afuna AI dəqiqələr içində dörd peşəkar dizayn təklif edir — sınamaq pulsuzdur.",
+        },
+        {
+          old: "Onlayn mebel almaq uyğun gələcəyini və ya üslubla uyğunlaşacağını təxmin etmək deməkdir.",
+          new: "Afuna AI onu əvvəlcə real otağınızda göstərir, beləliklə əminliklə alış-veriş edirsiniz.",
+        },
+      ],
+    },
     styles: {
       heading: "Dizayn üslublarını kəşf edin",
       subtitle: "Bir görünüş seçin, süni intellektimiz onu otağınıza uyğunlaşdırsın.",
