@@ -8,6 +8,7 @@ import { FeatureCard } from "@/components/landing/feature-card";
 import { HeroSceneLoader } from "@/components/landing/hero-scene-loader";
 import { ProcessSceneLoader } from "@/components/landing/process-scene-loader";
 import { DifferentSceneLoader } from "@/components/landing/different-scene-loader";
+import { HouseSceneLoader } from "@/components/landing/house-scene-loader";
 import { LanguageSwitcher } from "@/components/landing/language-switcher";
 import { StyleGallery } from "@/components/landing/style-gallery";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -195,8 +196,16 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="border-t border-border p-8 py-16">
-          <div className="mx-auto max-w-5xl">
+        <section className="relative overflow-hidden border-t border-border p-8 py-16">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.08]"
+          >
+            <div className="h-[32rem] w-[32rem]">
+              <HouseSceneLoader />
+            </div>
+          </div>
+          <div className="relative mx-auto max-w-5xl">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
