@@ -313,13 +313,13 @@ export default function HomePage() {
               {/* Mat-frame treatment: padded card border around the photo,
                   like a physical picture frame, rather than the photo
                   bleeding edge-to-edge. */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg ring-1 ring-inset ring-border sm:aspect-[16/10]">
+              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg ring-1 ring-inset ring-border sm:aspect-video">
                 <Image
                   src="/images/team/founders.webp"
                   alt="The Afuna AI team"
                   fill
                   sizes="(min-width: 768px) 672px, 100vw"
-                  className="object-cover object-top grayscale transition-all duration-500 group-hover:grayscale-0"
+                  className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
               </div>
