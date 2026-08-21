@@ -63,14 +63,15 @@ export function AlternativeGrid({
     });
 
     try {
-      if (alreadyFavorited) {
-        await fetch(`/api/favorites/${productId}`, { method: "DELETE" });
-      } else {
-        await fetch("/api/favorites", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ productId }),
-        });
+      const res = alreadyFavorited
+        ? await fetch(`/api/favorites/${productId}`, { method: "DELETE" })
+        : await fetch("/api/favorites", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productId }),
+          });
+      if (!res.ok) {
+        throw new Error(`Favorite toggle failed: ${res.status}`);
       }
     } catch {
       // Revert the optimistic update if the request actually failed.
