@@ -6,6 +6,7 @@ import { XCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FeatureCard } from "@/components/landing/feature-card";
 import { HeroSceneLoader } from "@/components/landing/hero-scene-loader";
+import { ProcessSceneLoader } from "@/components/landing/process-scene-loader";
 import { LanguageSwitcher } from "@/components/landing/language-switcher";
 import { StyleGallery } from "@/components/landing/style-gallery";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -157,8 +158,14 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="border-t border-border bg-muted/40">
-          <div className="mx-auto max-w-5xl p-8 py-16">
+        <section className="relative overflow-hidden border-t border-border bg-muted/40">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-12 -top-12 hidden h-64 w-64 opacity-40 sm:block"
+          >
+            <ProcessSceneLoader />
+          </div>
+          <div className="relative mx-auto max-w-5xl p-8 py-16">
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
