@@ -8,6 +8,7 @@ export const translations = {
   en: {
     nav: { signIn: "Sign in", signUp: "Sign up" },
     hero: {
+      tagline: "Design for everybody",
       titleLine1: "Redesign your room with AI.",
       titleLine2: "Shop every product in it.",
       subtitle:
@@ -118,6 +119,14 @@ export const translations = {
         },
       ],
     },
+    team: {
+      heading: "Meet the team",
+      subtitle: "The people building Afuna AI.",
+      members: [
+        { name: "Farida Mukhtarzade", role: "Architecture Design" },
+        { name: "Pablo", role: "Engineer" },
+      ],
+    },
     cta: {
       heading: "Ready to see your room reimagined?",
       subtitle:
@@ -129,6 +138,7 @@ export const translations = {
   az: {
     nav: { signIn: "Daxil ol", signUp: "Qeydiyyat" },
     hero: {
+      tagline: "Hər kəs üçün dizayn",
       titleLine1: "Otağınızı süni intellektlə yenidən dizayn edin —",
       titleLine2: "içindəki hər məhsulu satın alın.",
       subtitle:
@@ -237,6 +247,14 @@ export const translations = {
           title: "Alın və ya quraşdırma sifariş edin",
           description: "Məhsulları alın, ya da tam xidmətdən istifadə edin.",
         },
+      ],
+    },
+    team: {
+      heading: "Komandamızla tanış olun",
+      subtitle: "Afuna AI-ni quran insanlar.",
+      members: [
+        { name: "Farida Mukhtarzade", role: "Memarlıq Dizaynı" },
+        { name: "Pablo", role: "Mühəndis" },
       ],
     },
     cta: {
