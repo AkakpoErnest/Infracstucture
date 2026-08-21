@@ -28,7 +28,16 @@ export default function HomePage() {
       <main className="flex min-h-screen flex-col">
         <nav className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur">
           <div className="mx-auto flex max-w-5xl items-center justify-between p-4">
-            <span className="text-lg font-bold">Afuna AI</span>
+            <span className="flex items-center gap-2">
+              <Image
+                src="/images/logo-icon.png"
+                alt="Afuna AI logo"
+                width={28}
+                height={28}
+                className="rounded-md"
+              />
+              <span className="text-lg font-bold">Afuna AI</span>
+            </span>
             <div className="flex items-center gap-3">
               <LanguageSwitcher />
               <Link href="/sign-in">
@@ -150,32 +159,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="border-t border-border p-8 py-16">
-          <div className="mx-auto max-w-5xl">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5 }}
-              className="mb-10 text-center"
-            >
-              <h2 className="text-2xl font-bold">{t.benefits.heading}</h2>
-              <p className="mt-2 text-muted-foreground">{t.benefits.subtitle}</p>
-            </motion.div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {t.benefits.items.map((b, i) => (
-                <FeatureCard
-                  key={b.title}
-                  icon={BENEFIT_ICONS[i]}
-                  title={b.title}
-                  description={b.description}
-                  delay={i * 0.08}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section className="border-t border-border bg-muted/40">
           <div className="mx-auto max-w-5xl p-8 py-16">
             <motion.h2
@@ -201,6 +184,32 @@ export default function HomePage() {
                   <h3 className="font-semibold">{s.title}</h3>
                   <p className="text-sm text-muted-foreground">{s.description}</p>
                 </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-border p-8 py-16">
+          <div className="mx-auto max-w-5xl">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-10 text-center"
+            >
+              <h2 className="text-2xl font-bold">{t.benefits.heading}</h2>
+              <p className="mt-2 text-muted-foreground">{t.benefits.subtitle}</p>
+            </motion.div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {t.benefits.items.map((b, i) => (
+                <FeatureCard
+                  key={b.title}
+                  icon={BENEFIT_ICONS[i]}
+                  title={b.title}
+                  description={b.description}
+                  delay={i * 0.08}
+                />
               ))}
             </div>
           </div>
@@ -275,7 +284,7 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="overflow-hidden rounded-2xl border border-border shadow-lg"
+              className="group overflow-hidden rounded-2xl border border-border shadow-lg"
             >
               <div className="relative aspect-[4/3] w-full sm:aspect-[16/10]">
                 <Image
@@ -283,9 +292,9 @@ export default function HomePage() {
                   alt="The Afuna AI team"
                   fill
                   sizes="(min-width: 768px) 768px, 100vw"
-                  className="object-cover object-top grayscale transition-all duration-500 hover:grayscale-0"
+                  className="object-cover object-top grayscale transition-all duration-500 group-hover:grayscale-0"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
               </div>
             </motion.div>
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
