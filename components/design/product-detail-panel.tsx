@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { Heart } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
@@ -18,10 +19,14 @@ export function ProductDetailPanel({
   product,
   open,
   onOpenChange,
+  isFavorited,
+  onToggleFavorite,
 }: {
   product: ProductDetail | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  isFavorited: boolean;
+  onToggleFavorite: () => void;
 }) {
   if (!product) return null;
 
@@ -49,9 +54,24 @@ export function ProductDetailPanel({
           <dt className="text-muted-foreground">Price</dt>
           <dd>${product.price}</dd>
         </dl>
-        <Button className="mt-4 w-full" disabled title="Purchasing isn't available yet">
-          Buy Now (Coming soon)
-        </Button>
+        <div className="mt-4 flex flex-col gap-2">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={onToggleFavorite}
+            aria-pressed={isFavorited}
+          >
+            <Heart
+              className={
+                isFavorited ? "mr-2 h-4 w-4 fill-destructive text-destructive" : "mr-2 h-4 w-4"
+              }
+            />
+            {isFavorited ? "Favorited" : "Add to Favorites"}
+          </Button>
+          <Button className="w-full" disabled title="Purchasing isn't available yet">
+            Buy Now (Coming soon)
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
