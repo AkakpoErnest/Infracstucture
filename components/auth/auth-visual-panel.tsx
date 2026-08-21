@@ -79,23 +79,39 @@ function RotatingVisual() {
 export function AuthVisualPanel({ children }: { children: React.ReactNode }) {
   return (
     <main className="grid min-h-screen md:grid-cols-2">
-      <div className="mx-auto flex w-full max-w-sm flex-col justify-center gap-4 p-8">
-        <Link href="/" className="mb-2 flex items-center gap-2 self-start">
-          <Image
-            src="/images/logo-icon.png"
-            alt="Afuna AI logo"
-            width={28}
-            height={28}
-            className="rounded-md"
-          />
-          <span className="flex flex-col leading-tight">
-            <span className="text-lg font-bold">Afuna AI</span>
-            <span className="text-[11px] font-medium text-muted-foreground">
-              Design for everybody
+      <div className="relative flex flex-col justify-center overflow-hidden p-8">
+        {/* Same 3D glass icosahedron as the right-hand panel (or the only
+            3D on screen at all on mobile, where that panel is hidden) -
+            rendered large, centered, and very low-opacity directly behind
+            the form itself, on every screen size. Inputs have an opaque
+            bg-background so text stays perfectly legible; this only shows
+            through the surrounding whitespace. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.12]"
+        >
+          <div className="h-[28rem] w-[28rem]">
+            <AuthSceneLoader />
+          </div>
+        </div>
+        <div className="relative mx-auto flex w-full max-w-sm flex-col gap-4">
+          <Link href="/" className="mb-2 flex items-center gap-2 self-start">
+            <Image
+              src="/images/logo-icon.png"
+              alt="Afuna AI logo"
+              width={28}
+              height={28}
+              className="rounded-md"
+            />
+            <span className="flex flex-col leading-tight">
+              <span className="text-lg font-bold">Afuna AI</span>
+              <span className="text-[11px] font-medium text-muted-foreground">
+                Design for everybody
+              </span>
             </span>
-          </span>
-        </Link>
-        {children}
+          </Link>
+          {children}
+        </div>
       </div>
       <div className="relative hidden h-full flex-col md:flex">
         <div className="flex-1">
