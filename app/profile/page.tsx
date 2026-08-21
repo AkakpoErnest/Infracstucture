@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { AppHeader } from "@/components/layout/app-header";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -12,6 +13,13 @@ interface DesignSummary {
   createdAt: string;
 }
 
+interface FavoriteProduct {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+
 export default function ProfilePage() {
   // `required: true` makes next-auth redirect to the configured sign-in
   // page (pages.signIn = "/sign-in" in lib/auth.ts) when there's no
@@ -21,6 +29,8 @@ export default function ProfilePage() {
   const { data: session } = useSession({ required: true });
   const [designs, setDesigns] = useState<DesignSummary[] | null>(null);
   const [designsError, setDesignsError] = useState<string | null>(null);
+  const [favorites, setFavorites] = useState<FavoriteProduct[] | null>(null);
+  const [favoritesError, setFavoritesError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -33,6 +43,21 @@ export default function ProfilePage() {
         setDesigns(await res.json());
       } catch {
         setDesignsError("Could not load your designs.");
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/favorites");
+        if (!res.ok) {
+          setFavoritesError("Could not load your favorites.");
+          return;
+        }
+        setFavorites(await res.json());
+      } catch {
+        setFavoritesError("Could not load your favorites.");
       }
     })();
   }, []);
@@ -89,9 +114,34 @@ export default function ProfilePage() {
 
         <section className="mb-8">
           <h2 className="mb-2 text-lg font-semibold">Favorites</h2>
-          <Card>
-            <CardContent className="p-4 text-sm text-muted-foreground">Coming soon.</CardContent>
-          </Card>
+          {favoritesError && <p className="text-sm text-destructive">{favoritesError}</p>}
+          {favorites === null && !favoritesError && (
+            <p className="text-sm text-muted-foreground">Loading...</p>
+          )}
+          {favorites?.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              No favorites yet. Click the heart on any product in a design to save it here.
+            </p>
+          )}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {favorites?.map((p) => (
+              <Card key={p.id}>
+                <div className="relative aspect-square w-full">
+                  <Image
+                    src={p.imageUrl}
+                    alt={p.name}
+                    fill
+                    sizes="(min-width: 640px) 200px, 45vw"
+                    className="rounded-t-lg object-cover"
+                  />
+                </div>
+                <CardContent className="p-3">
+                  <p className="truncate text-sm font-medium">{p.name}</p>
+                  <p className="text-xs text-muted-foreground">${p.price}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </section>
 
         <section className="mb-8">
