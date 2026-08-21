@@ -46,13 +46,11 @@ export default function HomePage() {
             </span>
             <div className="flex items-center gap-3">
               <LanguageSwitcher />
+              {/* Sign up is one click away from Sign in (a link under the
+                  form there), not a second header button competing for
+                  attention here. */}
               <Link href="/sign-in">
-                <Button variant="ghost" size="sm">
-                  {t.nav.signIn}
-                </Button>
-              </Link>
-              <Link href="/sign-up">
-                <Button size="sm">{t.nav.signUp}</Button>
+                <Button size="sm">{t.nav.signIn}</Button>
               </Link>
             </div>
           </div>

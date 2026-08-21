@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { AuthSceneLoader } from "./auth-scene-loader";
 
@@ -79,6 +80,21 @@ export function AuthVisualPanel({ children }: { children: React.ReactNode }) {
   return (
     <main className="grid min-h-screen md:grid-cols-2">
       <div className="mx-auto flex w-full max-w-sm flex-col justify-center gap-4 p-8">
+        <Link href="/" className="mb-2 flex items-center gap-2 self-start">
+          <Image
+            src="/images/logo-icon.png"
+            alt="Afuna AI logo"
+            width={28}
+            height={28}
+            className="rounded-md"
+          />
+          <span className="flex flex-col leading-tight">
+            <span className="text-lg font-bold">Afuna AI</span>
+            <span className="text-[11px] font-medium text-muted-foreground">
+              Design for everybody
+            </span>
+          </span>
+        </Link>
         {children}
       </div>
       <div className="relative hidden h-full flex-col md:flex">

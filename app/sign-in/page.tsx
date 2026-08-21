@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -65,6 +66,12 @@ export default function SignInPage() {
           {loading ? "Signing in..." : "Sign in"}
         </Button>
       </form>
+      <p className="text-center text-sm text-muted-foreground">
+        Don&apos;t have an account?{" "}
+        <Link href="/sign-up" className="font-medium text-foreground underline">
+          Sign up
+        </Link>
+      </p>
     </AuthVisualPanel>
   );
 }
