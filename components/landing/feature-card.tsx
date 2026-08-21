@@ -1,14 +1,14 @@
 "use client";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import type { LucideIcon } from "lucide-react";
 
 export function FeatureCard({
-  icon: Icon,
+  iconSrc,
   title,
   description,
   delay = 0,
 }: {
-  icon: LucideIcon;
+  iconSrc: string;
   title: string;
   description: string;
   delay?: number;
@@ -21,8 +21,8 @@ export function FeatureCard({
       transition={{ duration: 0.5, delay }}
       className="flex flex-col gap-3 rounded-lg border border-border p-6 transition-shadow hover:shadow-md"
     >
-      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 text-primary">
-        <Icon className="h-5 w-5" />
+      <div className="flex h-10 w-10 items-center justify-center">
+        <Image src={iconSrc} alt="" width={40} height={40} />
       </div>
       <h3 className="font-semibold">{title}</h3>
       <p className="text-sm text-muted-foreground">{description}</p>

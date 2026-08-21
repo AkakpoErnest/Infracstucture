@@ -2,14 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, MotionConfig } from "framer-motion";
-import {
-  ShoppingBag,
-  Eye,
-  PiggyBank,
-  ShieldCheck,
-  XCircle,
-  CheckCircle2,
-} from "lucide-react";
+import { XCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FeatureCard } from "@/components/landing/feature-card";
 import { HeroSceneLoader } from "@/components/landing/hero-scene-loader";
@@ -17,7 +10,12 @@ import { LanguageSwitcher } from "@/components/landing/language-switcher";
 import { StyleGallery } from "@/components/landing/style-gallery";
 import { useLanguage } from "@/components/providers/language-provider";
 
-const BENEFIT_ICONS = [Eye, ShoppingBag, PiggyBank, ShieldCheck];
+const BENEFIT_ICONS = [
+  "/images/icons/benefit-see-before-buy.png",
+  "/images/icons/benefit-real-products.png",
+  "/images/icons/benefit-save-money.png",
+  "/images/icons/benefit-no-regrets.png",
+];
 const STEP_NUMBERS = ["01", "02", "03", "04"];
 
 export default function HomePage() {
@@ -205,7 +203,7 @@ export default function HomePage() {
               {t.benefits.items.map((b, i) => (
                 <FeatureCard
                   key={b.title}
-                  icon={BENEFIT_ICONS[i]}
+                  iconSrc={BENEFIT_ICONS[i]}
                   title={b.title}
                   description={b.description}
                   delay={i * 0.08}
