@@ -283,7 +283,7 @@ export default function HomePage() {
                   alt="The Afuna AI team"
                   fill
                   sizes="(min-width: 768px) 768px, 100vw"
-                  className="object-cover object-top"
+                  className="object-cover object-top grayscale transition-all duration-500 hover:grayscale-0"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
               </div>
