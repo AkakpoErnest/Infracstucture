@@ -37,7 +37,12 @@ export default function HomePage() {
                 height={28}
                 className="rounded-md"
               />
-              <span className="text-lg font-bold">Afuna AI</span>
+              <span className="flex flex-col leading-tight">
+                <span className="text-lg font-bold">Afuna AI</span>
+                <span className="text-[11px] font-medium text-muted-foreground">
+                  {t.hero.tagline}
+                </span>
+              </span>
             </span>
             <div className="flex items-center gap-3">
               <LanguageSwitcher />
