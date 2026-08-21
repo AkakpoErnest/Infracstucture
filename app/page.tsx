@@ -3,10 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, MotionConfig } from "framer-motion";
 import {
-  Upload,
-  Sparkles,
   ShoppingBag,
-  Wrench,
   Eye,
   PiggyBank,
   ShieldCheck,
@@ -20,7 +17,6 @@ import { LanguageSwitcher } from "@/components/landing/language-switcher";
 import { StyleGallery } from "@/components/landing/style-gallery";
 import { useLanguage } from "@/components/providers/language-provider";
 
-const FEATURE_ICONS = [Upload, Sparkles, ShoppingBag, Wrench];
 const BENEFIT_ICONS = [Eye, ShoppingBag, PiggyBank, ShieldCheck];
 const STEP_NUMBERS = ["01", "02", "03", "04"];
 
@@ -180,17 +176,49 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-5xl p-8 py-16">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {t.features.map((f, i) => (
-              <FeatureCard
-                key={f.title}
-                icon={FEATURE_ICONS[i]}
-                title={f.title}
-                description={f.description}
-                delay={i * 0.08}
-              />
-            ))}
+        <section className="border-t border-border bg-muted/40">
+          <div className="mx-auto max-w-5xl p-8 py-16">
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-10 text-center text-2xl font-bold"
+            >
+              {t.howItWorks.heading}
+            </motion.h2>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {t.howItWorks.steps.map((s, i) => (
+                <motion.div
+                  key={s.title}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="flex flex-col gap-2"
+                >
+                  <span className="text-sm font-mono text-primary/60">{STEP_NUMBERS[i]}</span>
+                  <h3 className="font-semibold">{s.title}</h3>
+                  <p className="text-sm text-muted-foreground">{s.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-border p-8 py-16">
+          <div className="mx-auto max-w-5xl">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-10 text-center"
+            >
+              <h2 className="text-2xl font-bold">{t.styles.heading}</h2>
+              <p className="mt-2 text-muted-foreground">{t.styles.subtitle}</p>
+            </motion.div>
+            <StyleGallery names={t.styles.names} />
           </div>
         </section>
 
@@ -231,52 +259,6 @@ export default function HomePage() {
         </section>
 
         <section className="border-t border-border p-8 py-16">
-          <div className="mx-auto max-w-5xl">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5 }}
-              className="mb-10 text-center"
-            >
-              <h2 className="text-2xl font-bold">{t.styles.heading}</h2>
-              <p className="mt-2 text-muted-foreground">{t.styles.subtitle}</p>
-            </motion.div>
-            <StyleGallery names={t.styles.names} />
-          </div>
-        </section>
-
-        <section className="border-t border-border bg-muted/40">
-          <div className="mx-auto max-w-5xl p-8 py-16">
-            <motion.h2
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5 }}
-              className="mb-10 text-center text-2xl font-bold"
-            >
-              {t.howItWorks.heading}
-            </motion.h2>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {t.howItWorks.steps.map((s, i) => (
-                <motion.div
-                  key={s.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.5, delay: i * 0.08 }}
-                  className="flex flex-col gap-2"
-                >
-                  <span className="text-sm font-mono text-primary/60">{STEP_NUMBERS[i]}</span>
-                  <h3 className="font-semibold">{s.title}</h3>
-                  <p className="text-sm text-muted-foreground">{s.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="border-t border-border p-8 py-16">
           <div className="mx-auto max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -293,16 +275,17 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="overflow-hidden rounded-xl"
+              className="overflow-hidden rounded-2xl border border-border shadow-lg"
             >
-              <div className="relative aspect-[3/4] w-full sm:aspect-video">
+              <div className="relative aspect-[4/3] w-full sm:aspect-[16/10]">
                 <Image
                   src="/images/team/founders.webp"
                   alt="The Afuna AI team"
                   fill
                   sizes="(min-width: 768px) 768px, 100vw"
-                  className="object-cover"
+                  className="object-cover object-top"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
               </div>
             </motion.div>
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">

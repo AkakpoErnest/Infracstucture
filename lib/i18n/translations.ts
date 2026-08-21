@@ -16,28 +16,6 @@ export const translations = {
       getStarted: "Get started free",
       signIn: "Sign in",
     },
-    features: [
-      {
-        title: "Upload your room",
-        description:
-          "Snap a photo of any room: living room, bedroom, kitchen, or office.",
-      },
-      {
-        title: "Get 4 AI redesigns",
-        description:
-          "Pick a style and budget; our AI generates four distinct, photorealistic redesigns.",
-      },
-      {
-        title: "Shop every product",
-        description:
-          "Every item in the design is real and clickable. See the price, brand, and details.",
-      },
-      {
-        title: "Have us install it",
-        description:
-          "Buy the products yourself, or let our team handle the entire project.",
-      },
-    ],
     benefits: {
       heading: "Why people use Afuna AI",
       subtitle: "Real outcomes, not just pretty pictures.",
@@ -146,28 +124,6 @@ export const translations = {
       getStarted: "Pulsuz başlayın",
       signIn: "Daxil ol",
     },
-    features: [
-      {
-        title: "Otağınızı yükləyin",
-        description:
-          "Hər hansı otağın şəklini çəkin — qonaq otağı, yataq otağı, mətbəx və ya ofis.",
-      },
-      {
-        title: "4 süni intellekt dizaynı əldə edin",
-        description:
-          "Stil və büdcə seçin; süni intellektimiz dörd fərqli, fotorealistik dizayn yaradır.",
-      },
-      {
-        title: "Hər məhsulu satın alın",
-        description:
-          "Dizaynda olan hər əşya realdır və klikləyə bilərsiniz — qiyməti, brendi və təfərrüatları görün.",
-      },
-      {
-        title: "Quraşdırmanı bizə həvalə edin",
-        description:
-          "Məhsulları özünüz alın, ya da komandamız bütün layihəni idarə etsin.",
-      },
-    ],
     benefits: {
       heading: "İnsanlar niyə Afuna AI istifadə edir",
       subtitle: "Sadəcə gözəl şəkillər deyil, real nəticələr.",
