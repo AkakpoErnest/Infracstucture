@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
-import path from "path";
-import { mkdir, writeFile } from "fs/promises";
+import { put } from "@vercel/blob";
 import { randomUUID } from "crypto";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -16,7 +15,10 @@ const NUM_ALTERNATIVES = 4;
 const DAILY_DESIGN_LIMIT = 4;
 
 const designRequestSchema = z.object({
-  roomPhotoUrl: z.string().regex(/^\/uploads\/rooms\/[\w-]+\.(png|jpe?g|webp)$/),
+  // Uploads live in Vercel Blob now (app/api/uploads/route.ts), which
+  // returns a full https:// URL - not the old local /uploads/rooms/...
+  // path this used to validate against.
+  roomPhotoUrl: z.string().url(),
   roomType: z.enum([
     "Living Room", "Bedroom", "Kitchen", "Bathroom", "Children's Room",
     "Office", "Hallway", "Balcony", "Other",
@@ -34,11 +36,12 @@ const designRequestSchema = z.object({
 
 async function saveGeneratedImage(base64: string, mimeType: string): Promise<string> {
   const ext = mimeType === "image/png" ? "png" : mimeType === "image/webp" ? "webp" : "jpg";
-  const dir = path.join(process.cwd(), "public", "uploads", "designs");
-  await mkdir(dir, { recursive: true });
-  const filename = `${randomUUID()}.${ext}`;
-  await writeFile(path.join(dir, filename), Buffer.from(base64, "base64"));
-  return `/uploads/designs/${filename}`;
+  const filename = `designs/${randomUUID()}.${ext}`;
+  const blob = await put(filename, Buffer.from(base64, "base64"), {
+    access: "public",
+    contentType: mimeType,
+  });
+  return blob.url;
 }
 
 export async function POST(request: Request) {
@@ -134,7 +137,6 @@ export async function POST(request: Request) {
     shortlist,
   });
 
-  const roomPhotoPath = path.join(process.cwd(), "public", input.roomPhotoUrl.replace(/^\//, ""));
   const wantsHotspots = input.serviceOption === "ready_to_implement";
 
   for (let index = 0; index < NUM_ALTERNATIVES; index++) {
@@ -143,7 +145,7 @@ export async function POST(request: Request) {
     });
 
     try {
-      const generated = await generateRoomDesign(roomPhotoPath, prompt);
+      const generated = await generateRoomDesign(input.roomPhotoUrl, prompt);
       const imageUrl = await saveGeneratedImage(generated.base64, generated.mimeType);
 
       let hasHotspots = false;

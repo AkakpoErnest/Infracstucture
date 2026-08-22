@@ -42,10 +42,8 @@ vi.mock("@/lib/replicate-images", () => ({
   generateRoomDesign: (...a: unknown[]) => mockGenerate(...a),
 }));
 
-vi.mock("fs/promises", () => ({
-  mkdir: vi.fn().mockResolvedValue(undefined),
-  writeFile: vi.fn().mockResolvedValue(undefined),
-}));
+const mockPut = vi.fn();
+vi.mock("@vercel/blob", () => ({ put: (...a: unknown[]) => mockPut(...a) }));
 
 import { POST, GET } from "./route";
 
@@ -58,7 +56,7 @@ function req(body: unknown) {
 }
 
 const validBody = {
-  roomPhotoUrl: "/uploads/rooms/abc.png",
+  roomPhotoUrl: "https://example.public.blob.vercel-storage.com/rooms/abc.png",
   roomType: "Living Room",
   style: "Scandinavian",
   colorPrefs: "warm neutrals",
@@ -87,6 +85,9 @@ describe("POST /api/designs", () => {
     mockIdentify.mockResolvedValue(
       JSON.stringify([{ productId: "1", x: 0.1, y: 0.1, width: 0.3, height: 0.3 }])
     );
+    mockPut.mockResolvedValue({
+      url: "https://example.public.blob.vercel-storage.com/designs/generated.png",
+    });
   });
 
   it("returns 401 when not signed in", async () => {
@@ -100,12 +101,12 @@ describe("POST /api/designs", () => {
     expect(res.status).toBe(400);
   });
 
-  it("rejects a path-traversal roomPhotoUrl with 400", async () => {
+  it("rejects a non-URL roomPhotoUrl (e.g. a path-traversal attempt) with 400", async () => {
     const res = await POST(req({ ...validBody, roomPhotoUrl: "../.env.local" }));
     expect(res.status).toBe(400);
   });
 
-  it("rejects an absolute-path roomPhotoUrl with 400", async () => {
+  it("rejects a bare filesystem path roomPhotoUrl with 400", async () => {
     const res = await POST(req({ ...validBody, roomPhotoUrl: "/etc/passwd" }));
     expect(res.status).toBe(400);
   });

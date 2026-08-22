@@ -1,5 +1,3 @@
-import fs from "fs/promises";
-
 export interface GeneratedImage {
   base64: string;
   mimeType: string;
@@ -52,7 +50,7 @@ export function isReplicateConfigured(): boolean {
  * Flux Kontext Pro (Black Forest Labs, hosted on Replicate).
  */
 export async function generateRoomDesign(
-  roomPhotoPath: string,
+  roomPhotoUrl: string,
   prompt: string
 ): Promise<GeneratedImage> {
   const apiToken = process.env.REPLICATE_API_TOKEN;
@@ -60,14 +58,9 @@ export async function generateRoomDesign(
     throw new Error("REPLICATE_API_TOKEN is not set");
   }
 
-  const imageBytes = await fs.readFile(roomPhotoPath);
-  const mimeType = roomPhotoPath.endsWith(".png")
-    ? "image/png"
-    : roomPhotoPath.endsWith(".webp")
-    ? "image/webp"
-    : "image/jpeg";
-  const inputImageDataUri = `data:${mimeType};base64,${imageBytes.toString("base64")}`;
-
+  // input_image accepts a base64 data URI OR a plain URL (see the API-shape
+  // note above) - room photos live in Vercel Blob now, so pass the URL
+  // straight through rather than downloading and re-encoding it ourselves.
   const response = await fetch(
     `https://api.replicate.com/v1/models/${getModel()}/predictions`,
     {
@@ -80,7 +73,7 @@ export async function generateRoomDesign(
       body: JSON.stringify({
         input: {
           prompt,
-          input_image: inputImageDataUri,
+          input_image: roomPhotoUrl,
           output_format: "png",
         },
       }),
