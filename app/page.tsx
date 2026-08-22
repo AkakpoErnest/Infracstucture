@@ -202,7 +202,7 @@ export default function HomePage() {
         <section className="relative overflow-hidden border-t border-border p-8 py-16">
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.08]"
+            className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-30"
           >
             <div className="h-[32rem] w-[32rem]">
               <HouseSceneLoader />

@@ -26,16 +26,26 @@ export function HouseBlob({ reducedMotion }: { reducedMotion: boolean }) {
       floatIntensity={reducedMotion ? 0 : 0.6}
     >
       <group ref={groupRef}>
-        {/* Walls */}
+        {/* Walls - depth (z) stretched well past width/height so this
+            reads as a real building volume from every rotation angle,
+            not a flat cube. */}
         <mesh position={[0, -0.3, 0]}>
-          <boxGeometry args={[1.6, 1.2, 1.6]} />
+          <boxGeometry args={[1.6, 1.2, 2.6]} />
           <meshStandardMaterial color="#c17a52" wireframe roughness={0.4} />
         </mesh>
-        {/* Roof - a 4-sided cone rotated 45deg so a flat face points forward */}
-        <mesh position={[0, 0.75, 0]} rotation={[0, Math.PI / 4, 0]}>
-          <coneGeometry args={[1.35, 0.9, 4]} />
-          <meshStandardMaterial color="#8a5334" wireframe roughness={0.4} />
-        </mesh>
+        {/* Roof - an outer group applies the depth stretch in world space
+            (unrotated), while the inner mesh's own 45deg rotation just
+            orients a flat face to point forward. Scaling the inner mesh
+            directly would stretch it along its own rotated local axis
+            (a diagonal), not the world Z the walls are stretched along -
+            nesting them like this keeps the roof's footprint matching
+            the walls exactly. */}
+        <group position={[0, 0.75, 0]} scale={[1, 1, 1.6]}>
+          <mesh rotation={[0, Math.PI / 4, 0]}>
+            <coneGeometry args={[1.35, 0.9, 4]} />
+            <meshStandardMaterial color="#8a5334" wireframe roughness={0.4} />
+          </mesh>
+        </group>
       </group>
     </Float>
   );

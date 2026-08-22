@@ -89,7 +89,7 @@ export function AuthVisualPanel({ children }: { children: React.ReactNode }) {
             this only shows through the surrounding whitespace. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.12]"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-30"
         >
           <div className="h-[28rem] w-[28rem]">
             <HouseSceneLoader />
